@@ -12,6 +12,7 @@ public class ServiceActivator implements BundleActivator {
 		System.out.println("Publisher Start");
 		ServicePublish publisherService = new ServicePublishImpl();
 		
+		
 		//register the service
 		publishServiceRegistration = context.registerService(
 				ServicePublish.class.getName(), publisherService, null);

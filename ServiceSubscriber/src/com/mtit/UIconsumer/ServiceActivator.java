@@ -2,6 +2,7 @@ package com.mtit.UIconsumer;
 
 import org.osgi.framework.BundleActivator;
 
+
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
@@ -19,8 +20,15 @@ public class ServiceActivator implements BundleActivator {
 		ServicePublish servicePublish = (ServicePublish) context.getService(serviceReference);
 		System.out.println(servicePublish.publishService());
 		
-		servicePublish.createFrame().setVisible(true);
+		//Login
+		servicePublish.createLogFrame().setVisible(true);
+		servicePublish.createLogFrame().setVisible(false);
 		
+		//Register
+		servicePublish.createRegFrame().setVisible(true);
+		
+		//Chat
+		servicePublish.createChatFrame().setVisible(true);
 		
 	}
 
