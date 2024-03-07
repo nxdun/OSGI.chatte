@@ -17,9 +17,8 @@ public class ServiceActivator implements BundleActivator {
 		System.out.println("Start Subscriber Service");
 		serviceReference = context.getServiceReference(ServicePublish.class.getName());
 		
-		ServicePublish servicePublish = (ServicePublish) context.getService(serviceReference);
-		System.out.println(servicePublish.publishService());
 		
+		ServicePublish servicePublish = (ServicePublish) context.getService(serviceReference);
 		//Login
 		servicePublish.createLogFrame().setVisible(true);
 		servicePublish.createLogFrame().setVisible(false);

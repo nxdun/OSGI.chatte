@@ -1,5 +1,6 @@
 package com.mtit.UIproducer;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Frame;
 
 
@@ -8,50 +9,61 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public class ServicePublishImpl implements ServicePublish {
+	
+    //create an array to hold all swing components
+	    private static java.util.List<Component> components = new java.util.ArrayList<Component>();
+	
 
-	@Override
-	public String publishService() {
-
-
-		//import swing package
-		
-		return "Execute the publish of ServicePublisher";
+	public Component sendComponent() {
+		// return the component array
+		return (Component) components;
 	}
 
 	@Override
 	public Frame createLogFrame() {
+		//create a new JFrame
 		JFrame frame = new JFrame();
+		//add it to components array
+		components.add(frame);
 		
+		//set the default actions
 		frame.setTitle("Chatte : login");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBounds(100, 100, 450, 300);
 		JPanel contentPane = new JPanel();
+		components.add(contentPane);
+		
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		frame.setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel login_label_un = new JLabel("UserName");
+		components.add(login_label_un);
 		login_label_un.setHorizontalAlignment(SwingConstants.CENTER);
 		login_label_un.setBounds(175, 24, 103, 24);
 		contentPane.add(login_label_un);
 		
 		JLabel login_label_pw = new JLabel("Password");
+		components.add(login_label_pw);
 		login_label_pw.setHorizontalAlignment(SwingConstants.CENTER);
 		login_label_pw.setBounds(175, 111, 103, 24);
 		contentPane.add(login_label_pw);
 		
 		JTextField login_textfield_pw = new JTextField();
+		components.add(login_textfield_pw);
 		login_textfield_pw.setBounds(102, 137, 244, 33);
 		contentPane.add(login_textfield_pw);
 		login_textfield_pw.setColumns(10);
 		
 		JTextField textField = new JTextField();
+		components.add(textField);
 		textField.setColumns(10);
 		textField.setBounds(102, 58, 244, 33);
 		contentPane.add(textField);
 		
 		JButton login_button_log = new JButton("New button");
+		components.add(login_button_log);
 		
 		
 		login_button_log.setForeground(new Color(0, 0, 64));
@@ -61,8 +73,8 @@ public class ServicePublishImpl implements ServicePublish {
 		
 		
 		JLabel login_label_out = new JLabel("");
+		components.add(login_label_out);
 		
-
 				login_button_log.addActionListener(new java.awt.event.ActionListener() {
 					public void actionPerformed(java.awt.event.ActionEvent e) {
 						login_label_out.setText("Login Success");
@@ -72,6 +84,8 @@ public class ServicePublishImpl implements ServicePublish {
 		login_label_out.setHorizontalAlignment(SwingConstants.CENTER);
 		login_label_out.setBounds(175, 239, 103, 24);
 		contentPane.add(login_label_out);
+		
+		
 		return frame;
 	}
 
