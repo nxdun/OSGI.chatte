@@ -2,8 +2,7 @@ package com.mtit.UIproducer;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
-
-
+import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -11,13 +10,12 @@ import javax.swing.border.EmptyBorder;
 public class ServicePublishImpl implements ServicePublish {
 	
     //create an array to hold all swing components
-	    private static java.util.List<Component> components = new java.util.ArrayList<Component>();
+	    private static ArrayList<Component> components = new ArrayList<Component>();
 	
-
-	public Component sendComponent() {
-		// return the component array
-		return (Component) components;
-	}
+	    @Override
+		public ArrayList<Component> sendComponent() {
+			return components;
+		}
 
 	@Override
 	public Frame createLogFrame() {
@@ -182,5 +180,7 @@ public class ServicePublishImpl implements ServicePublish {
 		contentPane.add(user_list);
 		return frame;
 	}
+
+	
 
 }

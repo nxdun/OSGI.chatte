@@ -5,7 +5,6 @@ import org.osgi.framework.BundleActivator;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-
 import com.mtit.UIproducer.ServicePublish;
 
 public class ServiceActivator implements BundleActivator {
@@ -19,15 +18,12 @@ public class ServiceActivator implements BundleActivator {
 		
 		
 		ServicePublish servicePublish = (ServicePublish) context.getService(serviceReference);
-		//Login
-		servicePublish.createLogFrame().setVisible(true);
-		servicePublish.createLogFrame().setVisible(false);
-		
-		//Register
-		servicePublish.createRegFrame().setVisible(true);
-		
-		//Chat
-		servicePublish.createChatFrame().setVisible(true);
+
+        System.out.println("ACTIVATE SERVICE UI CONSUMER");
+        
+        
+        //send data to other service
+        
 		
 	}
 

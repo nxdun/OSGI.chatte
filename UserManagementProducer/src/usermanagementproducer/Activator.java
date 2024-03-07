@@ -2,21 +2,33 @@ package usermanagementproducer;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 public class Activator implements BundleActivator {
 
-	private static BundleContext context;
+	ServiceRegistration publishServiceRegistration;
 
-	static BundleContext getContext() {
-		return context;
+	public void start(BundleContext context) throws Exception {
+		
+		
+		System.out.println("Publisher Start");
+		UserManagePublish ServicePublishImpl = new ServicePublishImpl();
+		
+		
+		//register the service
+		publishServiceRegistration = context.registerService(
+				UserManagePublish.class.getName(), ServicePublishImpl, null);
+		
+	
+		
+		
+		
 	}
 
-	public void start(BundleContext bundleContext) throws Exception {
-		Activator.context = bundleContext;
-	}
-
-	public void stop(BundleContext bundleContext) throws Exception {
-		Activator.context = null;
+	public void stop(BundleContext context) throws Exception {
+		System.out.println("Publisher Stop usermanagementproducer");
+		publishServiceRegistration.unregister();
+		
 	}
 
 }

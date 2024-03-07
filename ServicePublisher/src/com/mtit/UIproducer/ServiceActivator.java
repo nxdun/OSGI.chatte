@@ -4,6 +4,8 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
+
+
 public class ServiceActivator implements BundleActivator {
 
 	ServiceRegistration publishServiceRegistration;
@@ -12,7 +14,7 @@ public class ServiceActivator implements BundleActivator {
 		System.out.println("Publisher Start");
 		ServicePublish publisherService = new ServicePublishImpl();
 		
-		
+
 		//register the service
 		publishServiceRegistration = context.registerService(
 				ServicePublish.class.getName(), publisherService, null);
