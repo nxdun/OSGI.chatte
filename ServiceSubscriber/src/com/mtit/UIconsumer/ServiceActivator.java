@@ -13,23 +13,19 @@ public class ServiceActivator implements BundleActivator {
 	ServiceReference  serviceReference;
 
 	public void start(BundleContext context) throws Exception {
-		System.out.println("Start Subscriber Service");
+		System.out.println("................UI Consumer is started................");
 		serviceReference = context.getServiceReference(ServicePublish.class.getName());
 		
 		
 		ServicePublish servicePublish = (ServicePublish) context.getService(serviceReference);
-
-        System.out.println("ACTIVATE SERVICE UI CONSUMER");
-        
-        
-        //send data to other service
-        
+		
+		//TODO:in here im going to handle UI creation logic
 		
 	}
 
 	public void stop(BundleContext context) throws Exception {
 		
-		System.out.println("Good Bye!!");
+		System.out.println("................UI Consumer is stopped................");
 		//detach the service
 		context.ungetService(serviceReference);
 		

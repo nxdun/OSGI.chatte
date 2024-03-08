@@ -2,15 +2,16 @@ package usermanagementproducer;
 
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 
 
 public class ServicePublishImpl implements UserManagePublish {
 	
-	private ArrayList<Component> comps = new ArrayList<Component>();
+	private HashMap<String, Component> comps = new HashMap<String, Component>();
 	@Override
-	public void setUIRules(ArrayList<Component> components) {
+	public void setUIRules(HashMap<String, Component> components) {
 		this.comps = components;
 		
 		run();
@@ -23,8 +24,11 @@ public class ServicePublishImpl implements UserManagePublish {
 			if(comps.isEmpty()) {
 				System.out.println("No components to set rules");
 			} else {
-				for (Component comp : comps) {
-					System.out.println("Setting rules for: " + comp.getName());
+				System.out.println("Setting rules for components");
+				for (String key : comps.keySet()) {
+					System.out.println("Setting rules for " + key);
+					Component comp = comps.get(key);
+					comp.setEnabled(false);
 				}
 			
 		}
