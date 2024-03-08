@@ -19,17 +19,9 @@ public class ServicePublishImpl implements UserManagePublish {
 	
 	public void run() {
 		System.out.println("ServicePublishImpl on action");
-		
 
-			if(comps.isEmpty()) {
-				System.out.println("No components to set rules");
-			} else {
-				System.out.println("Setting rules for components");
-				for (String key : comps.keySet()) {
-					System.out.println("Setting rules for " + key);
-					Component comp = comps.get(key);
-					comp.setEnabled(false);
-				}
+				Component comp = comps.get("login_button_log");
+			
 			
 		}
 	}
@@ -38,4 +30,3 @@ public class ServicePublishImpl implements UserManagePublish {
 		
 	
 
-}
