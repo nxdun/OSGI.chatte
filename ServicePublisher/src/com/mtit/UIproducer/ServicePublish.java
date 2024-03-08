@@ -6,6 +6,7 @@ import java.util.HashMap;
 public interface ServicePublish {
 	//method
 	public HashMap<String, Component> sendComponent();
+	public void headStart();
 	public Frame createLogFrame();
 	public Frame createRegFrame();
 	public Frame createChatFrame();

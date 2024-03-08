@@ -2,14 +2,44 @@ package com.mtit.UIproducer;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Scanner;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+
+
 public class ServicePublishImpl implements ServicePublish {
+	
+	
+	//this will take initisative so we can create unlimited users
+
+	@Override
+	public void headStart() {
+		System.out.print("_____________________________________________________"
+				+ 		   "\n         hi there! Welcome to chat server wizard"
+				+ 		   "\n_____________________________________________________"
+				+ 		   "\n_____________________________________________________");
+
+		while(true) {
+			System.out.println("\n0)for testing purpose\n1)add new user account\n2)remove user account");
+			Scanner sc = new Scanner(System.in);
+			int choice = sc.nextInt();
+			switch(choice) {
+			case 0:
+				System.out.println("testing purpose");
+				createLogFrame().setVisible(true);
+				
+				break;
+			default:
+				System.out.println("invalid choice");
+				break;
+			}
+		}
+		
+	}
+
 	
     //hashmap to store the components so we can manipulate them in a different service
 	    private static HashMap<String, Component> components = new HashMap<String, Component>();
@@ -84,69 +114,68 @@ public class ServicePublishImpl implements ServicePublish {
 		return frame;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	@Override
 	public Frame createRegFrame() {
 		JFrame frame = new JFrame();
-		
+		components.put("frame",frame);
 		frame.setTitle("Chatte : Register");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame .setBounds(100, 100, 450, 300);
 		JPanel contentPane = new JPanel();
+		components.put("contentPane", contentPane);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
 
 		frame.setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel register_server = new JLabel("Server Name");
+		components.put("register_server", register_server);
 		register_server.setBounds(37, 48, 101, 14);
 		contentPane.add(register_server);
 		
 		JTextField register_textfield_sn = new JTextField();
+		components.put("register_textfield_sn", register_textfield_sn);
 		register_textfield_sn.setBounds(169, 45, 186, 20);
 		contentPane.add(register_textfield_sn);
 		register_textfield_sn.setColumns(10);
 		
 		JLabel register_username = new JLabel("User Name");
+		components.put("register_username", register_username);
 		register_username.setBounds(37, 90, 101, 14);
 		contentPane.add(register_username);
 		
 		JTextField register_textfield_un = new JTextField();
+		components.put("register_textfield_un", register_textfield_un);
 		register_textfield_un.setBounds(169, 87, 186, 20);
 		contentPane.add(register_textfield_un);
 		register_textfield_un.setColumns(10);
 		
 		JLabel register_pdw = new JLabel("Password");
+		components.put("register_pdw", register_pdw);
 		register_pdw.setBounds(37, 137, 101, 14);
 		contentPane.add(register_pdw);
 		
 		JTextField register_textfield_pwd = new JTextField();
+		components.put("register_textfield_pwd", register_textfield_pwd);
 		register_textfield_pwd.setBounds(169, 134, 186, 20);
 		contentPane.add(register_textfield_pwd);
 		register_textfield_pwd.setColumns(10);
 		
 		JButton register_button_reg = new JButton("Register");
+		components.put("register_button_reg", register_button_reg);
 		register_button_reg.setBounds(132, 183, 89, 23);
 		contentPane.add(register_button_reg);
 		
 		JButton register_button_reset = new JButton("Reset");
+		components.put("register_button_reset", register_button_reset);
 		register_button_reset.setBounds(229, 183, 89, 23);
 		contentPane.add(register_button_reset);
 		
 		JButton btnNewButton_2 = new JButton("Go Back");
+		components.put("btnNewButton_2", btnNewButton_2);
 		btnNewButton_2.setBounds(19, 11, 89, 23);
 		contentPane.add(btnNewButton_2);
 		return frame;

@@ -12,6 +12,7 @@ public class ServiceActivator implements BundleActivator {
 	public void start(BundleContext context) throws Exception {
 		System.out.println("................UI producer is started................");
 		ServicePublish publisherService = new ServicePublishImpl();
+		
 		//register the service
 		UIProducerRegistration = context.registerService(
 				ServicePublish.class.getName(), publisherService, null);

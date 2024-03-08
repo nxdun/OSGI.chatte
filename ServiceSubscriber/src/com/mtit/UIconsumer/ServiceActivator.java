@@ -20,6 +20,9 @@ public class ServiceActivator implements BundleActivator {
 		ServicePublish servicePublish = (ServicePublish) context.getService(serviceReference);
 		
 		//TODO:in here im going to handle UI creation logic
+		//initiate mtltiple users 
+		//do not cancel any jframe
+		
 		
 	}
 
