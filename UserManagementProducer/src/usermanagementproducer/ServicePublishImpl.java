@@ -1,30 +1,35 @@
 package usermanagementproducer;
 
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.HashMap;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
-import com.mtit.UIproducer.ServicePublish;
+
+
+
 
 public class ServicePublishImpl implements UserManagePublish {
 	
-	ServiceReference  UIproducerreference;
-	BundleContext context;
 	private HashMap<String, Component> comps = new HashMap<String, Component>();
-
+	@Override
+	public void setUIRules(HashMap<String, Component> components) {
+		this.comps = components;
+		
+		run();
+    }
+	
 	public void run() {
-		UIproducerreference = context.getServiceReference(ServicePublish.class.getName());
-		ServicePublish UIproducerService = (ServicePublish) context.getService(UIproducerreference);
+		System.out.println("ServicePublishImpl on action");
+		
 
-				Component comp = comps.get("btnNewButton_2");
-				//onclick event
-				comp.addMouseListener(new java.awt.event.MouseAdapter() {
-					public void mouseClicked(java.awt.event.MouseEvent evt) {
-						
-					}
-				});
-				
-			
+			if(comps.isEmpty()) {
+				System.out.println("No components to set rules");
+			} else {
+				System.out.println("Setting rules for components");
+				for (String key : comps.keySet()) {
+					System.out.println("Setting rules for " + key);
+					Component comp = comps.get(key);
+					comp.setEnabled(false);
+				}
 			
 		}
 	}
@@ -33,3 +38,4 @@ public class ServicePublishImpl implements UserManagePublish {
 		
 	
 
+}
