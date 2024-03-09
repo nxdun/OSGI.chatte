@@ -23,13 +23,18 @@ public class ServicePublishImpl implements UserManagePublish {
     private HashMap<Integer, JFrame> chatFrames = new HashMap<Integer, JFrame>();
     private HashMap<String, Component> comps = new HashMap<String, Component>();
     private HashMap<String, String> unpw = new HashMap<String, String>();
-
+    private int Frameno = 2;
     public void initiate(BundleContext cntext) {
         UIreference = cntext.getServiceReference(ServicePublish.class.getName());
         ServicePublish UIProducerService = (ServicePublish) cntext.getService(UIreference);
         UIProducerService.createLogFrame().setVisible(true);
-        chatFrames.put(0 , (JFrame) UIProducerService.createChatFrame());
+        
+        chatFrames.put(2 , (JFrame) UIProducerService.createChatFrame());
         chatFrames.put(3 , (JFrame) UIProducerService.createChatFrame());
+        chatFrames.put(4 , (JFrame) UIProducerService.createChatFrame());
+        chatFrames.put(5 , (JFrame) UIProducerService.createChatFrame());
+        chatFrames.put(6 , (JFrame) UIProducerService.createChatFrame());
+        
         chatFrames.put(1, (JFrame) UIProducerService.createRegFrame());
         chatFrames.get(1).setVisible(true);
         this.comps = UIProducerService.sendComponent();
@@ -94,22 +99,38 @@ public class ServicePublishImpl implements UserManagePublish {
     }
 
     public void showChatFrame(String username) {
-        JFrame chatFrame = chatFrames.get(0);
-        JFrame cFrame = chatFrames.get(3);
+    	
+    	JFrame chatFrame = chatFrames.get(Frameno);
+		if (chatFrame.isVisible()) {
+			Frameno++;
+			chatFrame = chatFrames.get(Frameno);
+			
+		}
 
-       
-        
-        
         chatFrame.setTitle("Chatte - " + username); // Set title with logged-in username
-        // Add chat UI components to the frame
-        // ...
-
-        // Set the chat frame's size, position, and visibility
         chatFrame.setSize(600, 400); // Set size as per your requirement
         chatFrame.setLocationRelativeTo(null); // Center the frame on the screen
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         chatFrame.setVisible(true); // Make the frame visible
-        cFrame.setVisible(true);
- 
+        
     }
     
 
