@@ -41,7 +41,6 @@ public class ServicePublishImpl implements UserManagePublish {
 
 	public void run() {
 		unpw.put("admin", "admin");
-
 		// Get UI components for login
 		JTextField usernameField = (JTextField) comps.get("login_textfield_un");
 		JTextField passwordField = (JTextField) comps.get("login_textfield_pw");
