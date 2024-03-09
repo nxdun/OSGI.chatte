@@ -7,8 +7,8 @@ import usermanagementproducer.UserManagePublish;
 
 public class Activator implements BundleActivator {
 
-	//ServiceReffernece
-		ServiceReference  UMreference;
+	// ServiceReffernece
+	ServiceReference UMreference;
 
 		public void start(BundleContext context) throws Exception {
 			System.out.println("................Start usermanagement consumer................");
@@ -20,6 +20,7 @@ public class Activator implements BundleActivator {
 			System.out.println("creating things to send to other service");
 			
 			UMproducerService.initiate(context);
+			UMproducerService.addUser("admin2", "admin2");
 			UMproducerService.run();
 			
 			

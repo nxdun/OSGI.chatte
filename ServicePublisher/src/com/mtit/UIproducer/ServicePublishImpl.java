@@ -13,40 +13,40 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public class ServicePublishImpl implements ServicePublish {
-	
-    //hashmap to store the components so we can manipulate them in a different service
-	    private static HashMap<String, Component> components = new HashMap<String, Component>();
-	    
-	    	
-	    	
-	    	//this will take initisative so we can create unlimited users
 
-	    	@Override
-	    	public void headStart() {
-	    		System.out.print("_____________________________________________________"
-	    				+ 		   "\n         hi there! Welcome to chat server wizard"
-	    				+ 		   "\n_____________________________________________________"
-	    				+ 		   "\n_____________________________________________________");
+	// hashmap to store the components so we can manipulate them in a different
+	// service
+	private static HashMap<String, Component> components = new HashMap<String, Component>();
 
-	    		while(true) {
-	    			System.out.println("\n0)for testing purpose\n1)add new user account\n2)remove user account");
-	    			Scanner sc = new Scanner(System.in);
-	    			int choice = sc.nextInt();
-	    			switch(choice) {
-	    			case 0:
-	    				System.out.println("testing purpose");
-	    				createLogFrame().setVisible(true);
-	    				
-	    				break;
-	    			default:
-	    				System.out.println("invalid choice");
-	    				break;
-	    			}
-	    		}
-	    		
-	    	}
+	// this will take initisative so we can create unlimited users
 
-	 //im here to send the components to the other service
+	@Override
+	public Frame headStart() {
+	    System.out.print("_____________________________________________________" +
+	            "\n         hi there! Welcome to chat server wizard" +
+	            "\n_____________________________________________________" +
+	            "\n_____________________________________________________");
+
+	    while (true) {
+	        System.out.println(
+	                "\n0)for testing purpose\n1)add new user account\n2)remove user account\n3)exit");
+	        Scanner sc = new Scanner(System.in);
+	        int choice = sc.nextInt();
+	        switch (choice) {
+	            case 0:
+	                System.out.println("testing purpose");
+	                return createLogFrame(); // Return and show the frame
+	            case 3:
+	                System.out.println("Exiting...");
+	                return null; // Return null to indicate exit
+	            default:
+	                System.out.println("invalid choice");
+	                break;
+	        }
+	    }
+	}
+
+	// im here to send the components to the other service
 	@Override
 	public HashMap<String, Component> sendComponent() {
 		return components;
@@ -116,19 +116,6 @@ public class ServicePublishImpl implements ServicePublish {
 			return frame;
 		}
 
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		@Override
 		public Frame createRegFrame() {

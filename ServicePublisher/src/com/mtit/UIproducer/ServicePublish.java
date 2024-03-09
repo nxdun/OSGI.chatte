@@ -4,8 +4,8 @@ import java.awt.Frame;
 import java.util.HashMap;
 
 public interface ServicePublish {
-	//method
-	public void headStart();
+	// method
+	public Frame headStart();
 	public HashMap<String, Component> sendComponent();
 	public Frame createLogFrame();
 	public Frame createRegFrame();

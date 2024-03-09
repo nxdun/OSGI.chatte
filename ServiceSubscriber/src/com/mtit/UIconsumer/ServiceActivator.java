@@ -1,5 +1,7 @@
 package com.mtit.UIconsumer;
 
+import java.awt.Frame;
+
 import org.osgi.framework.BundleActivator;
 
 
@@ -19,7 +21,11 @@ public class ServiceActivator implements BundleActivator {
 		
 		ServicePublish servicePublish = (ServicePublish) context.getService(serviceReference);
 		
-		//TODO:in here im going to handle UI creation logic
+		
+		//now handling ui navigation logic in a single lifecycle
+		Frame frame = servicePublish.headStart();
+		frame.setVisible(true);
+		servicePublish.sendComponent().get("login_button_log").setVisible(false);
 		
 	}
 
