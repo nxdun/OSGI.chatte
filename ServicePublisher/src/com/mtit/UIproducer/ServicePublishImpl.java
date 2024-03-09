@@ -160,6 +160,8 @@ public class ServicePublishImpl implements ServicePublish {
 			register_textfield_un.setBounds(169, 87, 186, 20);
 			contentPane.add(register_textfield_un);
 			register_textfield_un.setColumns(10);
+			components.put("register_textfield_un",register_textfield_un);
+			
 			
 			JLabel register_pdw = new JLabel("Password");
 			register_pdw.setBounds(37, 137, 101, 14);
@@ -169,10 +171,12 @@ public class ServicePublishImpl implements ServicePublish {
 			register_textfield_pwd.setBounds(169, 134, 186, 20);
 			contentPane.add(register_textfield_pwd);
 			register_textfield_pwd.setColumns(10);
+			components.put("register_textfield_pwd",register_textfield_pwd);
 			
 			JButton register_button_reg = new JButton("Register");
 			register_button_reg.setBounds(132, 183, 89, 23);
 			contentPane.add(register_button_reg);
+			components.put("register_button_reg",register_button_reg);
 			
 			JButton register_button_reset = new JButton("Reset");
 			register_button_reset.setBounds(229, 183, 89, 23);
@@ -181,6 +185,14 @@ public class ServicePublishImpl implements ServicePublish {
 			JButton btnNewButton_2 = new JButton("Go Back");
 			btnNewButton_2.setBounds(19, 11, 89, 23);
 			contentPane.add(btnNewButton_2);
+			
+			JLabel register_label_out = new JLabel("");
+			register_label_out.setHorizontalAlignment(SwingConstants.CENTER);
+			register_label_out.setBounds(175, 239, 103, 24);
+			contentPane.add(register_label_out);
+			components.put("register_label_out",register_label_out);
+			
+			
 			return frame;
 		}
 
