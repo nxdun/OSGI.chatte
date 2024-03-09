@@ -2,6 +2,8 @@ package com.mtit.UIproducer;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -228,6 +230,72 @@ public class ServicePublishImpl implements ServicePublish {
 			user_list.setBounds(352, 90, 149, 129);
 			contentPane.add(user_list);
 			components.put("user_list",user_list);
+			return frame;
+		}
+		public Frame privetChat() {
+			JFrame frame = new JFrame();
+			
+			frame.setTitle("Private Message");
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setBounds(100, 100, 484, 333);
+			JPanel contentPane = new JPanel();
+			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+			frame.setContentPane(contentPane);
+			contentPane.setLayout(null);
+			
+			JTextField Pvt_msg_txtField = new JTextField();
+			Pvt_msg_txtField.setBounds(10, 263, 338, 20);
+			contentPane.add(Pvt_msg_txtField);
+			Pvt_msg_txtField.setColumns(10);
+			
+			JButton Pvt_msg_Send = new JButton("Send");
+			Pvt_msg_Send.setBounds(369, 262, 89, 23);
+			contentPane.add(Pvt_msg_Send);
+			
+			JTextPane textPane_pvt = new JTextPane();
+			textPane_pvt.setBounds(10, 11, 448, 227);
+			contentPane.add(textPane_pvt);
+			
+			JButton pvtchat_gobackbtn = new JButton("Go back");
+			pvtchat_gobackbtn.setBounds(10, 0, 89, 23);
+			contentPane.add(pvtchat_gobackbtn);
+			
+			return frame;
+		}
+		
+		public Frame PrivateSelectUser() {
+			JFrame frame = new JFrame();
+			
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setBounds(100, 100, 295, 225);
+			JPanel contentPane = new JPanel();
+			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+			frame.setContentPane(contentPane);
+			contentPane.setLayout(null);
+			
+			JTextField textField_selectuname = new JTextField();
+			textField_selectuname.setBounds(37, 56, 214, 20);
+			contentPane.add(textField_selectuname);
+			textField_selectuname.setColumns(10);
+			
+			JLabel selectUname = new JLabel("User name");
+			selectUname.setBounds(37, 29, 99, 14);
+			contentPane.add(selectUname);
+			
+			JButton select_btnuser = new JButton("Select");
+			select_btnuser.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				}
+			});
+			select_btnuser.setBounds(94, 106, 89, 23);
+			contentPane.add(select_btnuser);
+			
+			JButton gobackBtn_selectuser = new JButton("Go back");
+			gobackBtn_selectuser.setBounds(94, 140, 89, 23);
+			contentPane.add(gobackBtn_selectuser);
+			
 			return frame;
 		}
 

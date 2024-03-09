@@ -10,5 +10,7 @@ public interface ServicePublish {
 	public Frame createLogFrame();
 	public Frame createRegFrame();
 	public Frame createChatFrame();
+	public Frame privetChat();
+	public Frame PrivateSelectUser();
 
 }
