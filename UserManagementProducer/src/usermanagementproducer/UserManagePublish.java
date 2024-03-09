@@ -13,6 +13,8 @@ public interface UserManagePublish {
 	
 	public void initiate(BundleContext context);
 	
+	public void showChatFrame(String username);//show chat frame and user name
+	
 	
 
 }

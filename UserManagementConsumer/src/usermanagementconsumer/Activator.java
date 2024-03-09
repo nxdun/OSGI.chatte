@@ -22,11 +22,12 @@ public class Activator implements BundleActivator {
 			UMproducerService.initiate(context);
 			UMproducerService.run();
 			
+			
 		}
 
 		public void stop(BundleContext context) throws Exception {
 			
-			System.out.println("..................Stop Subscriber Service..................");
+			System.out.println("..................Stop usermanagement consumer..................");
 			//detach the service biii all
 			context.ungetService(UMreference);
 			
