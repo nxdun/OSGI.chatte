@@ -4,19 +4,19 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
-public class Activator implements BundleActivator {
-	private ChatServer chatServer;
-	ServiceRegistration CSProducerRegistration;
 
+public class Activator implements BundleActivator {
+	//private ChatServer chatServer;
+	ServiceRegistration CSProducerRegistration;
+	private ChatServer chatServer;
     @Override
     public void start(BundleContext context) throws Exception {
     	try {
-    	chatServer = new ChatServer(9002); // Initialize with port 9002
-    	ChatServerInterface ChatPublisher = chatServer;// Initialize with port 9002
+    	ChatServerInterface ChatPublisher = new ChatServer(9003); ;// Initialize with port 9002
     	CSProducerRegistration = context.registerService(ChatServerInterface.class.getName(), ChatPublisher, null);
     	
-        System.out.println("Chat Server bundle started.");
-        ChatPublisher.startServerInThread(); // Start the server in a separate thread
+    	 chatServer = new ChatServer(9002);
+    	 chatServer.startServerInThread(); // Start the server in a separate thread
 	} catch (Exception e) {
 		System.out.println(e);
 	}

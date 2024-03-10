@@ -41,9 +41,9 @@ public class ServicePublishImpl implements ServicePublish {
 	    		while(true) {
 	    			System.out.println("\n0)start log frame for testing purpose"
 	    					+ "\n1)get current chat server port"
-	    					+ "\n2)"
+	    					+ "\n2)Stop server"
 	    					+ "\n3)"
-	    					+ "\n99)exit)");
+	    					+ "\n99)exit");
 	    			Scanner sc = new Scanner(System.in);
 	    			int choice = sc.nextInt();
 	    			switch(choice) {
@@ -62,7 +62,7 @@ public class ServicePublishImpl implements ServicePublish {
 						System.exit(0);
 						break;
 	    			default:
-	    				System.out.println("invalid choice");
+	    				System.out.println("invalid choice ");
 	    				break;
 	    			}
 	    		}

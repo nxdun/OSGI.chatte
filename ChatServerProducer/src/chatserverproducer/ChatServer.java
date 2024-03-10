@@ -33,12 +33,12 @@ public class ChatServer implements ChatServerInterface {
 	public void startServer() {
 		try {
 			serverSocket = new ServerSocket(port);
-			System.out.println("Chat Server started on port " + port);
+			System.out.println("CChat Server started on port " + port);
 			while (true) {
 				new Handler(serverSocket.accept()).start();
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("azazaz2 "+e);
 		} finally {
 			stopServer();
 		}
@@ -52,9 +52,8 @@ public class ChatServer implements ChatServerInterface {
 
 	public void stopServerThread() {
 		// stop server thread
-		if (serverThread.isAlive()) {
-			serverThread.interrupt();
-		}
+		
+	
 	}
 
 	public void stopServer() {
@@ -64,7 +63,7 @@ public class ChatServer implements ChatServerInterface {
 				System.out.println("Chat Server stopped");
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("azazaz "+e);
 		}
 	}
 
@@ -80,41 +79,51 @@ public class ChatServer implements ChatServerInterface {
 
 		public void run() {
 			try {
-				in = new BufferedReader(
-						new InputStreamReader(socket.getInputStream()));
-				out = new PrintWriter(socket.getOutputStream(), true);
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                out = new PrintWriter(socket.getOutputStream(), true);
 
-				while (true) {
+                while (true) {
+                    out.println("SUBMITNAME");
+                    name = in.readLine();
+                    if (name == null) {
+                        return;
+                    }
+                    synchronized (names) {
+                        if (!names.contains(name)) {
+                            names.add(name);
+                            break;
+                        }
+                    }
+                }
 
-					out.println("SERVERSTARTED");
-					writers.add(out);
-					broadcastLoggedInClients();
+                out.println("NAMEACCEPTED");
+                writers.add(out);
+                broadcastLoggedInClients();
 
-					while (true) {
-						String input = in.readLine();
-						if (input == null) {
-							return;
-						}
-						// Process input and broadcast messages...
-					}
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				if (name != null) {
-					names.remove(name);
-				}
-				if (out != null) {
-					writers.remove(out);
-				}
-				try {
-					socket.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				broadcastLoggedInClients();
-			}
-		}
+                while (true) {
+                    String input = in.readLine();
+                    if (input == null) {
+                        return;
+                    }
+                    // Process input and broadcast messages...
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (name != null) {
+                    names.remove(name);
+                }
+                if (out != null) {
+                    writers.remove(out);
+                }
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                broadcastLoggedInClients();
+            }
+        }
 
 		private void broadcastLoggedInClients() {
 			StringBuilder clientListMessage = new StringBuilder();
