@@ -16,20 +16,25 @@ public class ServiceActivator implements BundleActivator {
 
 
 	public void start(BundleContext context) throws Exception {
-		try {
+	
 		System.out.println("................UI Consumer is started................");
+		//ui producer service
 		serviceReference = context.getServiceReference(ServicePublish.class.getName());
-		UserManagePublish UMproducerService = (UserManagePublish) context.getService(UMserviceReference);
 		ServicePublish servicePublish = (ServicePublish) context.getService(serviceReference);
 		
+		//user management producer service
+		UMserviceReference = context.getServiceReference(UserManagePublish.class.getName());
+		UserManagePublish UMproducerService = (UserManagePublish) context.getService(UMserviceReference);
+		
+		
 		//TODO:in here im going to handle UI creation logic
-		servicePublish.initiate(context);
+		
+		
 		//initiates the service with conncection to the UI
 		UMproducerService.addLoginLogic();
 		UMproducerService.addRegistrationLogic();
-	} catch (Exception e) {
-		System.out.println(e);
-	}
+		servicePublish.initiate(context);
+		servicePublish.headStart();
 		
 	}
 	
@@ -38,8 +43,8 @@ public class ServiceActivator implements BundleActivator {
 		
 		
 		//detach the service
-		context.ungetService(serviceReference);
 		System.out.println("................UI Consumer is stopped................");
+		context.ungetService(serviceReference);
 	}
 
 }

@@ -12,9 +12,8 @@ public class Activator implements BundleActivator {
 
 		public void start(BundleContext context) throws Exception {
 			System.out.println("................Start usermanagement consumer................");
+			
 			UMreference = context.getServiceReference(UserManagePublish.class.getName());
-			
-			
 			UserManagePublish UMproducerService = (UserManagePublish) context.getService(UMreference);
 			
 			System.out.println("creating things to send to other service");

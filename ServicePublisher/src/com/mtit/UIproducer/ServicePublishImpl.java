@@ -19,7 +19,6 @@ public class ServicePublishImpl implements ServicePublish {
 	//get chat server producer
 	 ServiceReference CSreference;
 	 ChatServerInterface chatServer;
-	private BundleContext cntext;
 	
     //hashmap to store the components so we can manipulate them in a different service
 	    private static HashMap<String, Component> components = new HashMap<String, Component>();
@@ -27,12 +26,12 @@ public class ServicePublishImpl implements ServicePublish {
 	    	//this will take initiative in chatserver connction
 			public void initiate(BundleContext cntext) {
 				CSreference = cntext.getServiceReference(ChatServerInterface.class.getName());
-		        ServicePublish chatServer = (ServicePublish) cntext.getService(CSreference);
-	        	
+				chatServer = (ChatServerInterface) cntext.getService(CSreference);
 	        }
 
 
 	    	public void headStart() {
+	    		try {
 	  
 	    		System.out.print("_____________________________________________________"
 	    				+ 		   "\n         hi there! Welcome to chat server wizard"
@@ -42,9 +41,9 @@ public class ServicePublishImpl implements ServicePublish {
 	    		while(true) {
 	    			System.out.println("\n0)start log frame for testing purpose"
 	    					+ "\n1)get current chat server port"
-	    					+ "\n2)remove user account"
-	    					+ "\n3)restart the server"
-	    					+ "\n4)get server port");
+	    					+ "\n2)"
+	    					+ "\n3)"
+	    					+ "\n99)exit)");
 	    			Scanner sc = new Scanner(System.in);
 	    			int choice = sc.nextInt();
 	    			switch(choice) {
@@ -54,18 +53,23 @@ public class ServicePublishImpl implements ServicePublish {
 	    				
 	    				break;
 	    			case 1:
-						if (chatServer != null) {
 							System.out.println("current chat server port is : "
 									+ chatServer.getPort());
-						}else {
-							System.out.println("chat server is not available");
-						}
+						
+						break;
+					case 99 :
+						System.out.println("exiting");
+						System.exit(0);
 						break;
 	    			default:
 	    				System.out.println("invalid choice");
 	    				break;
 	    			}
 	    		}
+			} catch (Exception e) {
+				System.out.println("error in headstart" + e);
+				e.printStackTrace();
+			}
 	    		
 	    	}
 
