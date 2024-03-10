@@ -20,9 +20,7 @@ public class Activator implements BundleActivator {
 				.getServiceReference(ChatServerInterface.class.getName());
 
 		ChatServerInterface servicePublish = (ChatServerInterface) context.getService(serviceReference);
-		
 	
-
 
 	}
 

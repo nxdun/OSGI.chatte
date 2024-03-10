@@ -19,9 +19,9 @@ public class Activator implements BundleActivator {
 			
 			System.out.println("creating things to send to other service");
 			
+			//initiates the service with conncection to the UI
 			UMproducerService.initiate(context);
-			UMproducerService.run();
-			UMproducerService.addUser("admin2", "admin2");
+			
 			
 			
 		}

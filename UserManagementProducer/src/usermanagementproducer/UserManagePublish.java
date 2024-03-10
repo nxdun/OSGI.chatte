@@ -1,17 +1,11 @@
 package usermanagementproducer;
-import java.awt.Component;
-
-import java.awt.Frame;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.swing.JFrame;
-
 import org.osgi.framework.BundleContext;
 
 public interface UserManagePublish {
 	//method
-	public void run();
+	public void addLoginLogic();
+	public void addRegistrationLogic();
+	public void ChatClientLogic();
 	
 	public void initiate(BundleContext context);
 	

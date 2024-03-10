@@ -4,32 +4,47 @@ import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+
+import chatserverproducer.ChatServerInterface;
+
 public class ServicePublishImpl implements ServicePublish {
+	//get chat server producer
+	 ServiceReference CSreference;
+	 ChatServerInterface chatServer;
+	private BundleContext cntext;
 	
     //hashmap to store the components so we can manipulate them in a different service
 	    private static HashMap<String, Component> components = new HashMap<String, Component>();
-	    
-	    	
-	    	
-	    	//this will take initisative so we can create unlimited users
 
-	    	@Override
+	    	//this will take initiative in chatserver connction
+			public void initiate(BundleContext cntext) {
+				CSreference = cntext.getServiceReference(ChatServerInterface.class.getName());
+		        ServicePublish chatServer = (ServicePublish) cntext.getService(CSreference);
+	        	
+	        }
+
+
 	    	public void headStart() {
+	  
 	    		System.out.print("_____________________________________________________"
 	    				+ 		   "\n         hi there! Welcome to chat server wizard"
 	    				+ 		   "\n_____________________________________________________"
 	    				+ 		   "\n_____________________________________________________");
 
 	    		while(true) {
-	    			System.out.println("\n0)for testing purpose\n1)add new user account\n2)remove user account");
+	    			System.out.println("\n0)start log frame for testing purpose"
+	    					+ "\n1)get current chat server port"
+	    					+ "\n2)remove user account"
+	    					+ "\n3)restart the server"
+	    					+ "\n4)get server port");
 	    			Scanner sc = new Scanner(System.in);
 	    			int choice = sc.nextInt();
 	    			switch(choice) {
@@ -38,6 +53,14 @@ public class ServicePublishImpl implements ServicePublish {
 	    				createLogFrame().setVisible(true);
 	    				
 	    				break;
+	    			case 1:
+						if (chatServer != null) {
+							System.out.println("current chat server port is : "
+									+ chatServer.getPort());
+						}else {
+							System.out.println("chat server is not available");
+						}
+						break;
 	    			default:
 	    				System.out.println("invalid choice");
 	    				break;
@@ -46,6 +69,7 @@ public class ServicePublishImpl implements ServicePublish {
 	    		
 	    	}
 
+	    	
 	 //im here to send the components to the other service
 	@Override
 	public HashMap<String, Component> sendComponent() {
@@ -62,7 +86,7 @@ public class ServicePublishImpl implements ServicePublish {
 			
 			//set the default actions
 			frame.setTitle("Chatte : login");
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 			frame.setBounds(100, 100, 450, 300);
 			JPanel contentPane = new JPanel();
 			//add name to the array
@@ -116,26 +140,13 @@ public class ServicePublishImpl implements ServicePublish {
 			return frame;
 		}
 
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 		@Override
 		public Frame createRegFrame() {
 			JFrame frame = new JFrame();
 			
 			frame.setTitle("Chatte : Register");
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 			frame .setBounds(100, 100, 450, 300);
 			JPanel contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -202,7 +213,7 @@ public class ServicePublishImpl implements ServicePublish {
 			components.put("ChatFrame",frame);
 			
 			frame.setTitle("Chatte");
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 			frame.setBounds(100, 100, 527, 300);
 			JPanel contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -248,7 +259,7 @@ public class ServicePublishImpl implements ServicePublish {
 			JFrame frame = new JFrame();
 			
 			frame.setTitle("Private Message");
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 			frame.setBounds(100, 100, 484, 333);
 			JPanel contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -279,7 +290,7 @@ public class ServicePublishImpl implements ServicePublish {
 		public Frame PrivateSelectUser() {
 			JFrame frame = new JFrame();
 			
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 			frame.setBounds(100, 100, 295, 225);
 			JPanel contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
