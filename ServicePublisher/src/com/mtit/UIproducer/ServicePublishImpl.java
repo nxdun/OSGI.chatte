@@ -14,12 +14,16 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import chatserverproducer.ChatServerInterface;
+import usermanagementproducer.UserManagePublish;
 
 public class ServicePublishImpl implements ServicePublish {
-	//get chat server producer
-	 ServiceReference CSreference;
-	 ChatServerInterface chatServer;
 	
+	ServiceReference CSreference; //get chat producer
+	ServiceReference UMreference; //get user management producer
+	
+	//get chat server interface
+	ChatServerInterface chatServer;
+	UserManagePublish UM;
     //hashmap to store the components so we can manipulate them in a different service
 	    private static HashMap<String, Component> components = new HashMap<String, Component>();
 
@@ -28,6 +32,9 @@ public class ServicePublishImpl implements ServicePublish {
 				//get the chat server interface
 				CSreference = cntext.getServiceReference(ChatServerInterface.class.getName());
 				chatServer = (ChatServerInterface) cntext.getService(CSreference);
+				//get the user management interface
+				UMreference = cntext.getServiceReference(UserManagePublish.class.getName());
+				UM = (UserManagePublish) cntext.getService(UMreference);
 	        }
 
 
@@ -47,6 +54,7 @@ public class ServicePublishImpl implements ServicePublish {
 	    					+ "\n2)Stop Chat server"
 	    					+ "\n3)Set a new port and restart chatserver"
 	    					+ "\n3)start server in new port"
+	    					+ "\n4)remove a client from server"
 	    					+ "\n99)exit from entire framework");
 	    			Scanner sc = new Scanner(System.in);
 	    			int choice = sc.nextInt();
@@ -81,6 +89,13 @@ public class ServicePublishImpl implements ServicePublish {
 							break;
 						}
 						chatServer.setPort(newPort);
+						break;
+					case 4 :
+						// removes a client from the server
+						System.out.println(
+								"enter the client name you want to remove");
+						String client = sc.next();
+						System.out.println(chatServer.removeClient(client));
 						break;
 					case 99 :
 						//exits the java VM

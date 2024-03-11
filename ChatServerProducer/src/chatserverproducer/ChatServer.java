@@ -19,6 +19,15 @@ public class ChatServer implements ChatServerInterface {
 	public ChatServer(int port) {
 		this.port = port;
 	}
+	
+	public String removeClient(String client) {
+		if (client == null || client.isEmpty() || !names.contains(client)) {
+			return "Client not found";
+		}
+        names.remove(client);
+        broadcastLoggedInClients();
+        return "Client removed";
+    }
 
 	// port setter and getter
 	public int getPort() {
@@ -163,6 +172,7 @@ public class ChatServer implements ChatServerInterface {
 		}
 	}
 
+	//this method is used to broadcast the list of logged in clients to all the clients using the server
 	private void broadcastLoggedInClients() {
 		StringBuilder clientListMessage = new StringBuilder();
 		clientListMessage.append("USERLIST");
