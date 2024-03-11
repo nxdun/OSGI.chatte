@@ -12,30 +12,19 @@ public class Activator implements BundleActivator {
 
 		public void start(BundleContext context) throws Exception {
 			System.out.println("................Start usermanagement consumer................");
-			
 			UMreference = context.getServiceReference(UserManagePublish.class.getName());
 			UserManagePublish UMproducerService = (UserManagePublish) context.getService(UMreference);
-			
-			System.out.println("creating things to send to other service");
-			//ServicePublishImpl construct
-	
-			
 			//initiates the service with conncection to the UI
-			UMproducerService.initiate(context);
-			UMproducerService.showChatFrame("nadun", 3, 9003);
-		    UMproducerService.cframethread("vishwa", 2, 9003);
-	
-			
+			UMproducerService.initiate(context);	
 			
 			
 		}
 
 		public void stop(BundleContext context) throws Exception {
-			
 			System.out.println("..................Stop usermanagement consumer..................");
-			//detach the service biii all
+			UserManagePublish UMproducerService = (UserManagePublish) context.getService(UMreference);
+			UMproducerService.stopThread();
 			context.ungetService(UMreference);
-			
 		}
 
 }
