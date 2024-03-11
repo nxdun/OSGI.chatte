@@ -4,6 +4,11 @@ import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -170,6 +175,12 @@ public class ServicePublishImpl implements UserManagePublish {
     	ShowChatFrames showChatFrames = new ShowChatFrames(chatFrame, username, comps);
       
     }
+
+	@Override
+	public void ChatClientLogic() {
+		// TODO Auto-generated method stub
+		
+	}
     
 
   
@@ -181,6 +192,7 @@ public class ServicePublishImpl implements UserManagePublish {
 	
 	//constructor
 	public ShowChatFrames(JFrame frame, String username, HashMap<String, Component> comps) {
+		
 		
 		 System.out.println("startshowChatFrame");
 			try {
@@ -198,6 +210,7 @@ public class ServicePublishImpl implements UserManagePublish {
 		    //get Jpanel from the components
 		    //JPanel contentPane = (JPanel) comps.get("frame");
 		    JPanel contentPane = (JPanel) chatFrame.getContentPane();
+		    //message component
 		    JTextField message_panel = (JTextField) contentPane.getComponent(0) ;
 		    JButton send_brodcast = null;
 		    JButton send_pvt = null;
@@ -246,16 +259,28 @@ public class ServicePublishImpl implements UserManagePublish {
 		    
 		    user_list_m.setEditable(false);
 		    main_chat_m.setEditable(false);
-		    System.out.println("startshowChatFrame2 messcss" + main_chat_m );
 		    //add action listener
-		    send_brodcast.addActionListener(new ActionListener() {
+		    
+		
+		    
+		    
+		 // Make connection and initialize streams
+			String serverAddress = "localhost";
+		//TODO: server socket here
+			// client and server must run on same socket
+			Socket socket = new Socket(serverAddress, 9002);
+			// recived from server
+			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			// send to server
+			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+			
+			send_brodcast.addActionListener(new ActionListener() {
 		        @Override
 		        public void actionPerformed(ActionEvent e) {
 		        	JTextField message_panel = (JTextField) contentPane.getComponent(0) ;
 		        	String message = message_panel.getText();
-		        	System.out.println("msg is "+message);
-		        		main_chat_m.append("You: " + message + "\n");
-		        		message_panel.setText("");
+		       //send button message on click
+		        	out.println(message);
 		        	
 		        }
 		    });
@@ -264,13 +289,51 @@ public class ServicePublishImpl implements UserManagePublish {
 				public void actionPerformed(ActionEvent e) {
 					JTextField message_panel = (JTextField) contentPane.getComponent(0) ;
 					String message = message_panel.getText();
-					System.out.println("p msg is " + message);
-					main_chat_m.append("You: " + message + "\n");
-					message_panel.setText("");
+				//send private message on click
 				}
 			});
-		
-		    chatFrame.setVisible(true); // Make the frame visible
+
+			// Process all messages from server, according to the protocol.
+			// infinite loop
+			chatFrame.setVisible(true); // Make the frame visible
+			Thread chatThread = new Thread() {
+				public void run() {
+					while (true) {
+						String line;
+						try {
+							line = in.readLine();
+						
+						if (line.startsWith("NAMEACCEPTED")) {
+							JTextField message_panel = (JTextField) contentPane.getComponent(0) ;
+							message_panel.setText("recived server responss \n");
+							out.println(username);
+						}else if (line.startsWith("MESSAGE")) {
+							main_chat_m.append(line.substring(8) + "\n");
+						} else if (line.startsWith("USERLIST")) {
+							user_list_m.setText("");
+							String[] users = line.substring(9).split(",");
+							for (String user : users) {
+								user_list_m.append(user + "\n");
+							}
+						} else if (line.startsWith("PRIVATEMESSAGE")) {
+							main_chat_m.append(line.substring(15) + "\n");
+						} else if (line.startsWith("GROUPMESSAGE")) {
+							main_chat_m.append(line.substring(13) + "\n");
+						}else {
+							main_chat_m.append("Error in server response \n");
+						} }catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						
+					}
+				}
+			};
+			chatThread.start();
+		    
+		    
+		    
 		} catch (Exception e) {
 			System.out.println("error in showChatFrame " + e);
 		}

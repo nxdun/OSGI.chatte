@@ -22,10 +22,7 @@ public class Activator implements BundleActivator {
 			
 			//initiates the service with conncection to the UI
 			UMproducerService.initiate(context);
-			
-			
 			UMproducerService.showChatFrame("wee", 3);
-			UMproducerService.cframethread("asddsame", 2);
 		    UMproducerService.cframethread("asdd", 2);
 	
 			

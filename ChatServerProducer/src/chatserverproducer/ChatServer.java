@@ -19,8 +19,8 @@ public class ChatServer implements ChatServerInterface {
 	public ChatServer(int port) {
 		this.port = port;
 	}
-	
-	//port setter and getter
+
+	// port setter and getter
 	public int getPort() {
 		return port;
 	}
@@ -38,7 +38,7 @@ public class ChatServer implements ChatServerInterface {
 				new Handler(serverSocket.accept()).start();
 			}
 		} catch (IOException e) {
-			System.out.println("azazaz2 "+e);
+			System.out.println("azazaz2 " + e);
 		} finally {
 			stopServer();
 		}
@@ -52,9 +52,7 @@ public class ChatServer implements ChatServerInterface {
 
 	public void stopServerThread() {
 		// stop server thread
-		
-		
-	
+
 	}
 
 	public void stopServer() {
@@ -64,7 +62,7 @@ public class ChatServer implements ChatServerInterface {
 				System.out.println("Chat Server stopped");
 			}
 		} catch (IOException e) {
-			System.out.println("azazaz "+e);
+			System.out.println("azazaz " + e);
 		}
 	}
 
@@ -80,50 +78,83 @@ public class ChatServer implements ChatServerInterface {
 
 		public void run() {
 			try {
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                out = new PrintWriter(socket.getOutputStream(), true);
 
-                
-                out.println("NAMEACCEPTED");
-                writers.add(out);
-                broadcastLoggedInClients();
+				// Create character streams for the socket.
+				in = new BufferedReader(
+						new InputStreamReader(socket.getInputStream()));
+				out = new PrintWriter(socket.getOutputStream(), true);
 
-                while (true) {
-                    String input = in.readLine();
-                    if (input == null) {
-                        return;
-                    }
-                    // Process input and broadcast messages...
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (name != null) {
-                    names.remove(name);
-                }
-                if (out != null) {
-                    writers.remove(out);
-                }
-                try {
-                    socket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                broadcastLoggedInClients();
-            }
-        }
+				out.println("NAMEACCEPTED");
+				name = in.readLine();
+				names.add(name);
+				
+				writers.add(out);
+				broadcastLoggedInClients();
 
-		private void broadcastLoggedInClients() {
-			StringBuilder clientListMessage = new StringBuilder();
-			clientListMessage.append("CLIENTLIST ");
-			for (String client : names) {
-				clientListMessage.append(client).append(",");
+				for (PrintWriter writer : writers) {
+					writer.println("MESSAGE ...Hi !! " + name
+							+ " welcome to our chat server...");
+				}
+
+				while (true) {
+
+					String input = in.readLine();
+
+					if (input.contains(">>")) {
+						String[] parts = input.split(">>");
+						String receiver = parts[0].trim();
+						String message = parts[1].trim();
+
+						for (String n : names) {
+							if (n.equals(receiver)) {
+
+								for (PrintWriter writer : writers) {
+
+									if (writer.equals(out)
+											|| n.contains(receiver)) {
+										writer.println("PRIVATEMESSAGE "
+												+ receiver + " " + name + " !!"
+												+ message);
+									}
+								}
+								break;
+							}
+						}
+					} else {
+
+						for (PrintWriter writer : writers) {
+							writer.println(
+									"MESSAGE " + name + ":" + "" + input);
+						}
+
+					}
+
+				}
+			} catch (IOException e) {
+				System.out.println(e);
+			} finally {
+
 			}
-			for (PrintWriter writer : writers) {
-				writer.println(clientListMessage);
+
+			if (out != null) {
+				writers.remove(out);
 			}
+			try {
+				socket.close();
+			} catch (IOException e) {
+			}
+			broadcastLoggedInClients();
 		}
 	}
 
-
+	private void broadcastLoggedInClients() {
+		StringBuilder clientListMessage = new StringBuilder();
+		clientListMessage.append("USERLIST");
+		for (String client : names) {
+			clientListMessage.append(client).append(",");
+		}
+		for (PrintWriter writer : writers) {
+			writer.println(clientListMessage);
+		}
+	}
 }
