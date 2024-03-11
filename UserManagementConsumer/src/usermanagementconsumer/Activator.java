@@ -17,9 +17,17 @@ public class Activator implements BundleActivator {
 			UserManagePublish UMproducerService = (UserManagePublish) context.getService(UMreference);
 			
 			System.out.println("creating things to send to other service");
+			//ServicePublishImpl construct
+	
 			
 			//initiates the service with conncection to the UI
 			UMproducerService.initiate(context);
+			
+			
+			UMproducerService.showChatFrame("wee", 3);
+			UMproducerService.cframethread("asddsame", 2);
+		    UMproducerService.cframethread("asdd", 2);
+	
 			
 			
 			

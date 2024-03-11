@@ -53,6 +53,7 @@ public class ChatServer implements ChatServerInterface {
 	public void stopServerThread() {
 		// stop server thread
 		
+		
 	
 	}
 
@@ -82,20 +83,7 @@ public class ChatServer implements ChatServerInterface {
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(socket.getOutputStream(), true);
 
-                while (true) {
-                    out.println("SUBMITNAME");
-                    name = in.readLine();
-                    if (name == null) {
-                        return;
-                    }
-                    synchronized (names) {
-                        if (!names.contains(name)) {
-                            names.add(name);
-                            break;
-                        }
-                    }
-                }
-
+                
                 out.println("NAMEACCEPTED");
                 writers.add(out);
                 broadcastLoggedInClients();

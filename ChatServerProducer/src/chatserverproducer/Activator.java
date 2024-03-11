@@ -12,11 +12,12 @@ public class Activator implements BundleActivator {
     @Override
     public void start(BundleContext context) throws Exception {
     	try {
-    	ChatServerInterface ChatPublisher = new ChatServer(9003); ;// Initialize with port 9002
-    	CSProducerRegistration = context.registerService(ChatServerInterface.class.getName(), ChatPublisher, null);
+    		 chatServer = new ChatServer(9002);
+        	 chatServer.startServerInThread();
+        	 ChatServerInterface ChatPublisher = chatServer; ;// Initialize with port 9002
+        	 CSProducerRegistration = context.registerService(ChatServerInterface.class.getName(), ChatPublisher, null);
     	
-    	 chatServer = new ChatServer(9002);
-    	 chatServer.startServerInThread(); // Start the server in a separate thread
+    	 // Start the server in a separate thread
 	} catch (Exception e) {
 		System.out.println(e);
 	}

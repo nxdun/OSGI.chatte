@@ -221,7 +221,6 @@ public class ServicePublishImpl implements ServicePublish {
 			frame.setBounds(100, 100, 527, 300);
 			JPanel contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-			
 			components.put("frame",contentPane);
 
 			frame.setContentPane(contentPane);
