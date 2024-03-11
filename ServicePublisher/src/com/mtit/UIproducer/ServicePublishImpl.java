@@ -25,46 +25,72 @@ public class ServicePublishImpl implements ServicePublish {
 
 	    	//this will take initiative in chatserver connction
 			public void initiate(BundleContext cntext) {
+				//get the chat server interface
 				CSreference = cntext.getServiceReference(ChatServerInterface.class.getName());
 				chatServer = (ChatServerInterface) cntext.getService(CSreference);
 	        }
 
 
+			//contains in terminal functionality for manipulate other Services
 	    	public void headStart() {
 	    		try {
-	  
+	    		
 	    		System.out.print("_____________________________________________________"
 	    				+ 		   "\n         hi there! Welcome to chat server wizard"
 	    				+ 		   "\n_____________________________________________________"
 	    				+ 		   "\n_____________________________________________________");
 
 	    		while(true) {
-	    			System.out.println("\n0)start log frame for testing purpose"
-	    					+ "\n1)get current chat server port"
-	    					+ "\n2)Stop server"
+	    			//menu
+	    			System.out.println("\n0)start log frame"
+	    					+ "\n1)Take current chat server port"
+	    					+ "\n2)Stop Chat server"
+	    					+ "\n3)Set a new port and restart chatserver"
 	    					+ "\n3)start server in new port"
-	    					+ "\n99)exit");
+	    					+ "\n99)exit from entire framework");
 	    			Scanner sc = new Scanner(System.in);
 	    			int choice = sc.nextInt();
 	    			switch(choice) {
 	    			case 0:
+	    				//toggles the log frame visibility
 	    				System.out.println("testing purpose");
 	    				createLogFrame().setVisible(true);
-	    				
 	    				break;
 	    			case 2:
-						System.out.println("..stopping server..");
-						chatServer.stopServer();
+	    				//calls ChatServer service to stop the server
+						System.out.println("..STOPPING chat server..");
+						try {
+							chatServer.stopServer();
+						} catch (Exception e) {
+							System.out.println("cant stop server/server is not running../already stopped..");
+							e.printStackTrace();
+						}
 						System.out.println("..server stopped..");
 						break;
 	    			case 1:
-							System.out.println("current chat server port is : "
-									+ chatServer.getPort());
-						
+	    				//prints running chat server port
+							System.out.println("current chat server port is : "+ chatServer.getPort());
+						break;
+					case 3 :
+						// sets a new port and restarts the server
+						System.out.println("enter  new port you want to set");
+						int newPort = sc.nextInt();
+						//validate the port number
+						if (newPort < 1024 || newPort > 65535) {
+							System.out.println("TRY AGAIN : invalid port number");
+							break;
+						}
+						chatServer.setPort(newPort);
 						break;
 					case 99 :
-						System.out.println("exiting");
-						System.exit(0);
+						//exits the java VM
+						System.out.println("are you sure you want to exit? (y/n)");
+						String exit = sc.next();
+						if(exit.equals("y") || exit.equals("Y")) {
+                            System.exit(0);
+						} else {
+							System.out.println("returning to main menu");
+						}
 						break;
 	    			default:
 	    				System.out.println("invalid choice ");
@@ -85,7 +111,8 @@ public class ServicePublishImpl implements ServicePublish {
 		return components;
 	}
 	
-	//im here to create the raw login frame
+	//all methods from here are for creating frames
+	//also puts components to the hashmap with Same Name
 		@Override
 		public Frame createLogFrame() {
 			//create a new JFrame
@@ -263,7 +290,7 @@ public class ServicePublishImpl implements ServicePublish {
 			components.put("user_list",user_list);
 			return frame;
 		}
-		public Frame privetChat() {
+		public Frame privateChatFrame() {
 			JFrame frame = new JFrame();
 			
 			frame.setTitle("Private Message");
@@ -295,7 +322,7 @@ public class ServicePublishImpl implements ServicePublish {
 			return frame;
 		}
 		
-		public Frame PrivateSelectUser() {
+		public Frame PrivateSelectUserFrame() {
 			JFrame frame = new JFrame();
 			
 			frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);

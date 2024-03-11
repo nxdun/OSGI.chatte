@@ -24,12 +24,16 @@ public class ChatServer implements ChatServerInterface {
 	public int getPort() {
 		return port;
 	}
+	
+	//stop server thread and start server in new thread | new port
 	public void setPort(int port) {
 		stopServerThread();
 		this.port = port;
 		startServerInThread();
 	}
-
+	//runs server in main thread
+	//for testing purposes
+	//WARNING: this method is not thread safe
 	public void startServer() {
 		try {
 			serverSocket = new ServerSocket(port);
@@ -43,6 +47,9 @@ public class ChatServer implements ChatServerInterface {
 			stopServer();
 		}
 	}
+	
+	//runs server in new thread
+	//this is currently used 
 	public void startServerInThread() {
 		Thread serverThread = new Thread(() -> {
 			startServer();
@@ -52,6 +59,13 @@ public class ChatServer implements ChatServerInterface {
 
 	public void stopServerThread() {
 		// stop server thread
+		try {
+			serverSocket.close();
+			serverThread.interrupt();
+			System.out.println("ChatServer producer : Chat Server stopped");
+		} catch (IOException e) {
+			System.out.println("ChatServer producer : Exception occured " + e);
+		}
 
 	}
 
@@ -62,7 +76,7 @@ public class ChatServer implements ChatServerInterface {
 				System.out.println("Chat Server stopped");
 			}
 		} catch (IOException e) {
-			System.out.println("azazaz " + e);
+			System.out.println("ChatServer producer : Exception occured  " + e);
 		}
 	}
 
@@ -80,12 +94,14 @@ public class ChatServer implements ChatServerInterface {
 			try {
 
 				// Create character streams for the socket.
-				in = new BufferedReader(
-						new InputStreamReader(socket.getInputStream()));
+				
+				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				out = new PrintWriter(socket.getOutputStream(), true);
 
+				//initial message sent to client
 				out.println("NAMEACCEPTED");
 				name = in.readLine();
+				
 				names.add(name);
 				
 				writers.add(out);
@@ -95,7 +111,8 @@ public class ChatServer implements ChatServerInterface {
 					writer.println("MESSAGE ...Hi !! " + name
 							+ " welcome to our chat server...");
 				}
-
+				
+				//private messaging
 				while (true) {
 
 					String input = in.readLine();
@@ -121,7 +138,6 @@ public class ChatServer implements ChatServerInterface {
 							}
 						}
 					} else {
-
 						for (PrintWriter writer : writers) {
 							writer.println(
 									"MESSAGE " + name + ":" + "" + input);
