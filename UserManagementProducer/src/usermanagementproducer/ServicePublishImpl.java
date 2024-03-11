@@ -28,6 +28,7 @@ import com.mtit.UIproducer.ServicePublish;
 
 
 public class ServicePublishImpl implements UserManagePublish {
+	private int portno = 9002;
     
     ServiceReference UIreference;
     ServicePublish UIProducerService;
@@ -88,8 +89,13 @@ public class ServicePublishImpl implements UserManagePublish {
                     outputLabel.setForeground(java.awt.Color.GREEN);
                     outputLabel.setText("Login successful!");
                     
-                    //displays chatframe from here
-                    showChatFrame(username,3);
+                    for (int i = 2; i < 7; i++) {
+                    	if(chatFrames.get(i).isVisible() == false) {
+                    		showChatFrame(username, i, portno);
+                    		break;
+						} 
+                    	
+            		};
 
                 } else {
                     // Show error message
@@ -158,11 +164,11 @@ public class ServicePublishImpl implements UserManagePublish {
     }
 
     
-    public void cframethread(String username, int frameno) {
+    public void cframethread(String username, int frameno, int pno) {
 		// thread to display chat frame
 		Thread cframethread = new Thread() {
 			public void run() {
-				showChatFrame(username, frameno);
+				showChatFrame(username, frameno, pno);
 			}
 		};
 		cframethread.start();
@@ -170,9 +176,10 @@ public class ServicePublishImpl implements UserManagePublish {
     
     
     //displays chat frame max 6 USERS
-    public void showChatFrame(String username, int frameno) {
+    public void showChatFrame(String username, int frameno, int port) {
+    	port = portno;
     	JFrame chatFrame = chatFrames.get(frameno);
-    	ShowChatFrames showChatFrames = new ShowChatFrames(chatFrame, username, comps);
+    	ShowChatFrames showChatFrames = new ShowChatFrames(chatFrame, username, comps, portno);
       
     }
 
@@ -191,7 +198,7 @@ public class ServicePublishImpl implements UserManagePublish {
     private JTextArea main_chat_m = new JTextArea() ;
 	
 	//constructor
-	public ShowChatFrames(JFrame frame, String username, HashMap<String, Component> comps) {
+	public ShowChatFrames(JFrame frame, String username, HashMap<String, Component> comps, int port) {
 		
 		
 		 System.out.println("startshowChatFrame");
@@ -259,8 +266,7 @@ public class ServicePublishImpl implements UserManagePublish {
 		    
 		    user_list_m.setEditable(false);
 		    main_chat_m.setEditable(false);
-		    //add action listener
-		    
+		
 		
 		    
 		    
@@ -268,7 +274,7 @@ public class ServicePublishImpl implements UserManagePublish {
 			String serverAddress = "localhost";
 		//TODO: server socket here
 			// client and server must run on same socket
-			Socket socket = new Socket(serverAddress, 9002);
+			Socket socket = new Socket(serverAddress, port);
 			// recived from server
 			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			// send to server
@@ -322,7 +328,7 @@ public class ServicePublishImpl implements UserManagePublish {
 						}else {
 							main_chat_m.append("Error in server response \n");
 						} }catch (IOException e) {
-							// TODO Auto-generated catch block
+							// TODO Auto-generated catch blockk
 							e.printStackTrace();
 						}
 						

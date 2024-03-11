@@ -42,7 +42,7 @@ public class ServicePublishImpl implements ServicePublish {
 	    			System.out.println("\n0)start log frame for testing purpose"
 	    					+ "\n1)get current chat server port"
 	    					+ "\n2)Stop server"
-	    					+ "\n3)"
+	    					+ "\n3)start server in new port"
 	    					+ "\n99)exit");
 	    			Scanner sc = new Scanner(System.in);
 	    			int choice = sc.nextInt();
@@ -52,6 +52,11 @@ public class ServicePublishImpl implements ServicePublish {
 	    				createLogFrame().setVisible(true);
 	    				
 	    				break;
+	    			case 2:
+						System.out.println("..stopping server..");
+						chatServer.stopServer();
+						System.out.println("..server stopped..");
+						break;
 	    			case 1:
 							System.out.println("current chat server port is : "
 									+ chatServer.getPort());

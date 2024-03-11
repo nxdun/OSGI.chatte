@@ -27,9 +27,7 @@ public class ServiceActivator implements BundleActivator {
 		UserManagePublish UMproducerService = (UserManagePublish) context.getService(UMserviceReference);
 		
 		
-		//TODO:in here im going to handle UI creation logic
-		
-		
+
 		//initiates the service with conncection to the UI
 		UMproducerService.addLoginLogic();
 		UMproducerService.addRegistrationLogic();

@@ -8,8 +8,8 @@ public interface UserManagePublish {
 	public void ChatClientLogic();
 	
 	public void initiate(BundleContext context);
-	public void cframethread(String username, int frameno);
-	public void showChatFrame(String username, int frameno);//show chat frame and user name
+	public void cframethread(String username, int frameno, int port);
+	public void showChatFrame(String username, int frameno, int port);//show chat frame and user name
 
 	public void addUser(String string, String string2);
 	
