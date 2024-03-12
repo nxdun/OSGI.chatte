@@ -10,30 +10,32 @@ import com.mtit.UIproducer.ServicePublish;
 public class ServiceActivator implements BundleActivator {
 
 	// ServiceReffernce
-	ServiceReference UMserviceReference;
 	ServiceReference serviceReference;
+	ServiceReference UMserviceReference;
 
 	public void start(BundleContext context) throws Exception {
 
 		System.out.println(
 				"................UI Consumer is started................");
 		// ui producer service
-		try {
+		
 			serviceReference = context.getServiceReference(ServicePublish.class.getName());
-			ServicePublish servicePublish = (ServicePublish) context.getService(serviceReference);
+			ServicePublish uiproducer = (ServicePublish) context.getService(serviceReference);
 
 			// user management producer service
 			UMserviceReference = context.getServiceReference(UserManagePublish.class.getName());
-			UserManagePublish UMproducerService = (UserManagePublish) context.getService(UMserviceReference);
+			UserManagePublish umproducer = (UserManagePublish) context.getService(UMserviceReference);
 			// initiates the service with conncection to the UI
-			UMproducerService.addLoginLogic();
-			UMproducerService.addRegistrationLogic();
-			servicePublish.initiate(context);
-			servicePublish.headStart();
+			try {
+				uiproducer.initiate(context);
+				
+				umproducer.addLoginLogic();
+				umproducer.addRegistrationLogic();
+			
+			uiproducer.headStart();
 			
 		} catch (NullPointerException e) {
-			System.out.println(
-					"UI Consumer Looks like Referenced Service is not started yet. Please start the service(UI producer, UM Service) first.");
+			System.out.println( "nuu UI Consumer Looks like Referenced Service is not started yet. Please start the service(UI producer, UM Service) first." );
 		}
 
 	}

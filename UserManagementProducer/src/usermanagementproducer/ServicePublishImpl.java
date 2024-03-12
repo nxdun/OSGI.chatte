@@ -11,8 +11,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -49,8 +47,6 @@ public class ServicePublishImpl implements UserManagePublish {
     //username and password data cotains in the hashmap
     private HashMap<String, String> unpw = new HashMap<String, String>();
     
-    
-    
 
     //initiation of the service takes frames the UI
     public void initiate(BundleContext cntext) {
@@ -79,6 +75,7 @@ public class ServicePublishImpl implements UserManagePublish {
         //initialized userframe needed components
         user_list_m = new JTextArea();
         main_chat_m = new JTextArea();
+
     }
     
     public void addLoginLogic() {
@@ -208,10 +205,6 @@ public class ServicePublishImpl implements UserManagePublish {
     }
 
 }
-
-
-
-
 
 
 
@@ -374,7 +367,7 @@ public class ServicePublishImpl implements UserManagePublish {
     }
 	
 
-}
+}}
 
 
 
