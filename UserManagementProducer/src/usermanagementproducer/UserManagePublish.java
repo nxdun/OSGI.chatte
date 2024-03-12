@@ -2,19 +2,15 @@ package usermanagementproducer;
 import org.osgi.framework.BundleContext;
 
 public interface UserManagePublish {
-	//method
+	//methods
 	public void addLoginLogic();
 	public void addRegistrationLogic();
-	public void ChatClientLogic();
-	
 	public void initiate(BundleContext context);
-	public void cframethread(String username, int frameno, int port);
-	public void showChatFrame(String username, int frameno, int port);//show chat frame and user name
-
 	public void addUser(String string, String string2);
-	
 	void registerUser(String username, String password);
 	
-	
-
+	//chat client methods
+	public void showChatFrame(String username, int frameno, int port);//show chat frame and user name
+	public void cframethread(String username, int frameno, int port);
+	public void stopThread();
 }

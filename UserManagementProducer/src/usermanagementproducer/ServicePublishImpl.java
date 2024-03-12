@@ -30,22 +30,33 @@ import com.mtit.UIproducer.ServicePublish;
 
 
 public class ServicePublishImpl implements UserManagePublish {
+	//default port number
 	private int portno = 9002;
-    
+	private int Frameno = 2;
+	
+	//service references
     ServiceReference UIreference;
     ServicePublish UIProducerService;
-
-    private HashMap<Integer, JFrame> chatFrames = new HashMap<Integer, JFrame>();
-    private ArrayList<JFrame> frameArray = new ArrayList<JFrame>();
-    private HashMap<String, Component> comps = new HashMap<String, Component>();
-    private HashMap<String, String> unpw = new HashMap<String, String>();
-    private int Frameno = 2;
+    
+    //for instantiate chat frames
+    ShowChatFrames showChatFrames;
     private JTextArea user_list_m ;
     private JTextArea main_chat_m ;
+    
+    //Data r3ecived from the UI service
+    private HashMap<Integer, JFrame> chatFrames = new HashMap<Integer, JFrame>();
+    private HashMap<String, Component> comps = new HashMap<String, Component>();
+    private ArrayList<JFrame> frameArray = new ArrayList<JFrame>();
+  
+    //username and password data cotains in the hashmap
+    private HashMap<String, String> unpw = new HashMap<String, String>();
+    
+    
     
 
     //initiation of the service takes frames the UI
     public void initiate(BundleContext cntext) {
+    	// Get UI service reference
         UIreference = cntext.getServiceReference(ServicePublish.class.getName());
         ServicePublish UIProducerService = (ServicePublish) cntext.getService(UIreference);
         
@@ -55,6 +66,7 @@ public class ServicePublishImpl implements UserManagePublish {
 		for (int i = 2; i < 7; i++) {
 			chatFrames.put(i, (JFrame) UIProducerService.createChatFrame());
 		}
+		//delete me
 		for (int i = 0; i <= 9 ; i++) {
 			frameArray.add((JFrame) UIProducerService.createChatFrame());
 		}
@@ -66,6 +78,7 @@ public class ServicePublishImpl implements UserManagePublish {
         //take UI components from the UI service
         this.comps = UIProducerService.sendComponent();
         
+        //initialized userframe needed components
         user_list_m = new JTextArea();
         main_chat_m = new JTextArea();
     }
@@ -197,17 +210,27 @@ public class ServicePublishImpl implements UserManagePublish {
     	ShowChatFrames showChatFrames = new ShowChatFrames(chatFrame, username, comps, portno);
       
     }
-
-	@Override
-	public void ChatClientLogic() {
-		// TODO Auto-generated method stub
-		
-	}
     
+	public void stopThread() {
+    	//stop the thread doing wait loop
+		try {
+			showChatFrames.stoppThread();
+			Thread.currentThread().interrupt();
+		} catch (Exception e) {
+			System.out.println("error in stopThread " + e);
+	
+		
+    }
 
-  
 }
 
+
+
+
+
+
+
+//chat frames class implementation
  class ShowChatFrames {
     private JTextArea user_list_m = new JTextArea() ;
     private JTextArea main_chat_m = new JTextArea() ;
@@ -232,7 +255,7 @@ public class ServicePublishImpl implements UserManagePublish {
 		    //get Jpanel from the components
 		    //JPanel contentPane = (JPanel) comps.get("frame");
 		    JPanel contentPane = (JPanel) chatFrame.getContentPane();
-		    //message component
+
 		    JTextField message_panel = (JTextField) contentPane.getComponent(0) ;
 		    JButton send_brodcast = null;
 		    JButton send_pvt = null;
@@ -287,7 +310,7 @@ public class ServicePublishImpl implements UserManagePublish {
 		    
 		 // Make connection and initialize streams
 			String serverAddress = "localhost";
-		//TODO: server socket here
+		 //
 			// client and server must run on same socket
 			Socket socket = new Socket(serverAddress, port);
 			// recived from server
@@ -324,7 +347,7 @@ public class ServicePublishImpl implements UserManagePublish {
             });
 
 			// Process all messages from server, according to the protocol.
-			// infinite loop
+			// Threaded infinite loop
 			chatFrame.setVisible(true); // Make the frame visible
 			Thread chatThread = new Thread() {
 				public void run() {
@@ -367,10 +390,12 @@ public class ServicePublishImpl implements UserManagePublish {
 		} catch (Exception e) {
 			System.out.println("error in showChatFrame " + e);
 		}
-		
 
-		
 	}
+	
+	public void stoppThread() {
+        Thread.currentThread().interrupt();
+    }
 	
 
 }

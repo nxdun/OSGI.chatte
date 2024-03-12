@@ -14,57 +14,128 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import chatserverproducer.ChatServerInterface;
+import usermanagementproducer.UserManagePublish;
 
 public class ServicePublishImpl implements ServicePublish {
-	//get chat server producer
-	 ServiceReference CSreference;
-	 ChatServerInterface chatServer;
 	
+	ServiceReference CSreference; //get chat producer
+	ServiceReference UMreference; //get user management producer
+	
+	//get chat server interface
+	ChatServerInterface chatServer;
+	UserManagePublish UM;
     //hashmap to store the components so we can manipulate them in a different service
 	    private static HashMap<String, Component> components = new HashMap<String, Component>();
 
 	    	//this will take initiative in chatserver connction
 			public void initiate(BundleContext cntext) {
+				//get the chat server interface
 				CSreference = cntext.getServiceReference(ChatServerInterface.class.getName());
 				chatServer = (ChatServerInterface) cntext.getService(CSreference);
+				//get the user management interface
+				UMreference = cntext.getServiceReference(UserManagePublish.class.getName());
+				UM = (UserManagePublish) cntext.getService(UMreference);
 	        }
 
 
+			//contains in terminal functionality for manipulate other Services
 	    	public void headStart() {
 	    		try {
-	  
+	    		
 	    		System.out.print("_____________________________________________________"
 	    				+ 		   "\n         hi there! Welcome to chat server wizard"
 	    				+ 		   "\n_____________________________________________________"
 	    				+ 		   "\n_____________________________________________________");
 
 	    		while(true) {
-	    			System.out.println("\n0)start log frame for testing purpose"
-	    					+ "\n1)get current chat server port"
-	    					+ "\n2)Stop server"
-	    					+ "\n3)start server in new port"
-	    					+ "\n99)exit");
+	    			//menu
+	    			System.out.println("\n"
+	    					+ 		   "\n_____________________________________________________"
+	    					+ 		   "\n         Chat Server Service Management"
+	    					+ 		   "\n_____________________________________________________"
+	    					+ "\n1) Take current CHAT SERVER PORT"
+	    					+ "\n2)Stops CHAT SERVER"
+	    					+ "\n3)Set a new PORT and restart CHATSERVER"
+	    					+ "\n4)kick a client from server"
+	    					+ 		   "\n_____________________________________________________"
+	    					+ 		   "\n         Chat Clients Service Management"
+	    					+ 		   "\n_____________________________________________________"
+	    					+ "\n5)Stops all client ui threads"
+	    					+ "\n6)register a new user"
+	    					+ 		   "\n_____________________________________________________"
+	    					+ 		   "\n         Other"
+	    					+ 		   "\n_____________________________________________________"
+	    					+ "\n0) TESTING : start log in frame"
+	    					+ "\n99)exit from entire framework"
+	    					);
 	    			Scanner sc = new Scanner(System.in);
 	    			int choice = sc.nextInt();
 	    			switch(choice) {
 	    			case 0:
+	    				//toggles the log frame visibility
 	    				System.out.println("testing purpose");
 	    				createLogFrame().setVisible(true);
-	    				
+	    				break;
+	    			case 1:
+	    				//prints running chat server port
+	    				System.out.println("current chat server port is : "+ chatServer.getPort());
 	    				break;
 	    			case 2:
-						System.out.println("..stopping server..");
-						chatServer.stopServer();
+	    				//calls ChatServer service to stop the server
+						System.out.println("..STOPPING chat server..");
+						try {
+							chatServer.stopServer();
+						} catch (Exception e) {
+							System.out.println("cant stop server/server is not running../already stopped..");
+							e.printStackTrace();
+						}
 						System.out.println("..server stopped..");
 						break;
-	    			case 1:
-							System.out.println("current chat server port is : "
-									+ chatServer.getPort());
-						
+					case 3 :
+						// sets a new port and restarts the server
+						System.out.println("enter  new port you want to set");
+						int newPort = sc.nextInt();
+						//validate the port number
+						if (newPort < 1024 || newPort > 65535) {
+							System.out.println("TRY AGAIN : invalid port number");
+							break;
+						}
+						chatServer.setPort(newPort);
+						break;
+					case 4 :
+						// removes a client from the server
+						System.out.println(
+								"enter the client name you want to remove");
+						String client = sc.next();
+						System.out.println(chatServer.removeClient(client));
+					case 5 :
+						// stops all client ui threads
+						System.out.println("stopping all client threads");
+						UM.stopThread();
+						break;
+					case 6 :
+						// registers a new user
+						System.out.println("enter the username");
+						String username = sc.next();
+						System.out.println("enter the password");
+						String password = sc.next();
+						try {
+							UM.addUser(username, password);
+						} catch (Exception e) {
+							System.out.println("error in adding user");
+							e.printStackTrace();
+						}
+			
 						break;
 					case 99 :
-						System.out.println("exiting");
-						System.exit(0);
+						//exits the java VM
+						System.out.println("are you sure you want to exit? (y/n)");
+						String exit = sc.next();
+						if(exit.equals("y") || exit.equals("Y")) {
+                            System.exit(0);
+						} else {
+							System.out.println("returning to main menu");
+						}
 						break;
 	    			default:
 	    				System.out.println("invalid choice ");
@@ -85,7 +156,8 @@ public class ServicePublishImpl implements ServicePublish {
 		return components;
 	}
 	
-	//im here to create the raw login frame
+	//all methods from here are for creating frames
+	//also puts components to the hashmap with Same Name
 		@Override
 		public Frame createLogFrame() {
 			//create a new JFrame
@@ -263,7 +335,7 @@ public class ServicePublishImpl implements ServicePublish {
 			components.put("user_list",user_list);
 			return frame;
 		}
-		public Frame privetChat() {
+		public Frame privateChatFrame() {
 			JFrame frame = new JFrame();
 			
 			frame.setTitle("Private Message");
@@ -295,7 +367,7 @@ public class ServicePublishImpl implements ServicePublish {
 			return frame;
 		}
 		
-		public Frame PrivateSelectUser() {
+		public Frame PrivateSelectUserFrame() {
 			JFrame frame = new JFrame();
 			
 			frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
