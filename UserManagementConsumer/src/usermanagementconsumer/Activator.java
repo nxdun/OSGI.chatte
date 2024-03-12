@@ -15,9 +15,8 @@ public class Activator implements BundleActivator {
 			UMreference = context.getServiceReference(UserManagePublish.class.getName());
 			UserManagePublish UMproducerService = (UserManagePublish) context.getService(UMreference);
 			//initiates the service with conncection to the UI
-			UMproducerService.initiate(context);	
-			
-			
+			UMproducerService.initiate(context);
+
 		}
 
 		public void stop(BundleContext context) throws Exception {
