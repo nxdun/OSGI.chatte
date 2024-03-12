@@ -200,10 +200,11 @@ public class ServicePublishImpl implements UserManagePublish {
     	//stop the thread doing wait loop
 		try {
 			showChatFrames.stoppThread();
+			Thread.currentThread().interrupt();
 		} catch (Exception e) {
 			System.out.println("error in stopThread " + e);
-		}
-		showChatFrames.stoppThread();
+	
+		
     }
 
 }

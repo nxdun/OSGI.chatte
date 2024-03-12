@@ -18,7 +18,8 @@ public class ServiceActivator implements BundleActivator {
 		//registers service with the context(start)
 		UIProducerRegistration = context.registerService(ServicePublish.class.getName(), publisherService, null);
 	}
-
+	
+	//stop the lifecycle of UI producer service
 	public void stop(BundleContext context) throws Exception {
 		try {
 		UIProducerRegistration.unregister();

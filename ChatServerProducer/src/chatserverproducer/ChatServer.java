@@ -51,7 +51,7 @@ public class ChatServer implements ChatServerInterface {
 				new Handler(serverSocket.accept()).start();
 			}
 		} catch (IOException e) {
-			System.out.println("azazaz2 " + e);
+			System.out.println("Server socket said : " + e.getMessage());
 		} finally {
 			stopServer();
 		}
@@ -70,7 +70,7 @@ public class ChatServer implements ChatServerInterface {
 		// stop server thread
 		try {
 			serverSocket.close();
-			serverThread.interrupt();
+			
 			System.out.println("ChatServer producer : Chat Server stopped");
 		} catch (IOException e) {
 			System.out.println("ChatServer producer : Exception occured " + e);

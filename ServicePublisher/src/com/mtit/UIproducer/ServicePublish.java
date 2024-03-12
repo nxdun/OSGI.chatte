@@ -6,7 +6,7 @@ import java.util.HashMap;
 import org.osgi.framework.BundleContext;
 
 public interface ServicePublish {
-	//method
+	//methods
 	//UI Consumer will call this method to initiate the UI
 	public void initiate(BundleContext cntext);
 	//Contains in terminal functionality for manipulate other Services

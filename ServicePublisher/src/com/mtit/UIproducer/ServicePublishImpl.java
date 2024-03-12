@@ -49,13 +49,25 @@ public class ServicePublishImpl implements ServicePublish {
 
 	    		while(true) {
 	    			//menu
-	    			System.out.println("\n0)start log frame"
-	    					+ "\n1)Take current chat server port"
-	    					+ "\n2)Stop Chat server"
-	    					+ "\n3)Set a new port and restart chatserver"
-	    					+ "\n3)start server in new port"
-	    					+ "\n4)remove a client from server"
-	    					+ "\n99)exit from entire framework");
+	    			System.out.println("\n"
+	    					+ 		   "\n_____________________________________________________"
+	    					+ 		   "\n         Chat Server Service Management"
+	    					+ 		   "\n_____________________________________________________"
+	    					+ "\n1) Take current CHAT SERVER PORT"
+	    					+ "\n2)Stops CHAT SERVER"
+	    					+ "\n3)Set a new PORT and restart CHATSERVER"
+	    					+ "\n4)kick a client from server"
+	    					+ 		   "\n_____________________________________________________"
+	    					+ 		   "\n         Chat Clients Service Management"
+	    					+ 		   "\n_____________________________________________________"
+	    					+ "\n5)Stops all client ui threads"
+	    					+ "\n6)register a new user"
+	    					+ 		   "\n_____________________________________________________"
+	    					+ 		   "\n         Other"
+	    					+ 		   "\n_____________________________________________________"
+	    					+ "\n0) TESTING : start log in frame"
+	    					+ "\n99)exit from entire framework"
+	    					);
 	    			Scanner sc = new Scanner(System.in);
 	    			int choice = sc.nextInt();
 	    			switch(choice) {
@@ -63,6 +75,10 @@ public class ServicePublishImpl implements ServicePublish {
 	    				//toggles the log frame visibility
 	    				System.out.println("testing purpose");
 	    				createLogFrame().setVisible(true);
+	    				break;
+	    			case 1:
+	    				//prints running chat server port
+	    				System.out.println("current chat server port is : "+ chatServer.getPort());
 	    				break;
 	    			case 2:
 	    				//calls ChatServer service to stop the server
@@ -74,10 +90,6 @@ public class ServicePublishImpl implements ServicePublish {
 							e.printStackTrace();
 						}
 						System.out.println("..server stopped..");
-						break;
-	    			case 1:
-	    				//prints running chat server port
-							System.out.println("current chat server port is : "+ chatServer.getPort());
 						break;
 					case 3 :
 						// sets a new port and restarts the server
@@ -96,6 +108,24 @@ public class ServicePublishImpl implements ServicePublish {
 								"enter the client name you want to remove");
 						String client = sc.next();
 						System.out.println(chatServer.removeClient(client));
+					case 5 :
+						// stops all client ui threads
+						System.out.println("stopping all client threads");
+						UM.stopThread();
+						break;
+					case 6 :
+						// registers a new user
+						System.out.println("enter the username");
+						String username = sc.next();
+						System.out.println("enter the password");
+						String password = sc.next();
+						try {
+							UM.addUser(username, password);
+						} catch (Exception e) {
+							System.out.println("error in adding user");
+							e.printStackTrace();
+						}
+			
 						break;
 					case 99 :
 						//exits the java VM
