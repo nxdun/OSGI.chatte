@@ -4,8 +4,6 @@ import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -84,7 +82,7 @@ public class ServicePublishImpl implements UserManagePublish {
     }
     
     public void addLoginLogic() {
-        // Get UI components for login
+    	// Get UI components for login
         JTextField usernameField = (JTextField) comps.get("login_textfield_un");
         JTextField passwordField = (JTextField) comps.get("login_textfield_pw");
         JButton loginButton = (JButton) comps.get("login_button_log");
@@ -94,30 +92,24 @@ public class ServicePublishImpl implements UserManagePublish {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Takes the username and password from the UI
+            	//takes the username and password from the UI
                 String username = usernameField.getText();
                 String password = passwordField.getText();
 
                 // Validate login credentials
                 if (isValidLogin(username, password)) {
-                    // Check if the username is already logged in
-                    if (isUserLoggedIn(username)) {
-                        // Show error message
-                        outputLabel.setForeground(java.awt.Color.RED);
-                        outputLabel.setText("User already logged in!");
-                    } else {
-                        // Show success message and proceed
-                        outputLabel.setForeground(java.awt.Color.GREEN);
-                        outputLabel.setText("Login successful!");
+                    // Show success message and proceed
+                    outputLabel.setForeground(java.awt.Color.GREEN);
+                    outputLabel.setText("Login successful!");
+                    
+                    for (int i = 2; i < 7; i++) {
+                    	if(chatFrames.get(i).isVisible() == false) {
+                    		showChatFrame(username, i, portno);
+                    		break;
+						} 
+                    	
+            		};
 
-                        // Open chat frame
-                        for (int i = 2; i < 7; i++) {
-                            if (chatFrames.get(i).isVisible() == false) {
-                                showChatFrame(username, i, portno);
-                                break;
-                            }
-                        }
-                    }
                 } else {
                     // Show error message
                     outputLabel.setForeground(java.awt.Color.RED);
@@ -127,13 +119,6 @@ public class ServicePublishImpl implements UserManagePublish {
         });
         chatFrames.get(0).setVisible(true);
     }
-    
-    private boolean isUserLoggedIn(String username) {
-        // Check if the username is present in the list of logged-in users
-        return chatFrames.values().stream()
-                .anyMatch(frame -> frame.getTitle().equals("Chatte - " + username));
-    }
-
     
 	public void addRegistrationLogic() {
 		 
@@ -336,15 +321,6 @@ public class ServicePublishImpl implements UserManagePublish {
 				//send private message on click
 				}
 			});
-			
-			//when chat frame is closed send a message indicating user has left
-			chatFrame.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    // When chat frame is closed, send a message indicating user has left
-                    out.println( username + " has left the chat");
-                }
-            });
 
 			// Process all messages from server, according to the protocol.
 			// Threaded infinite loop
@@ -358,15 +334,15 @@ public class ServicePublishImpl implements UserManagePublish {
 						
 						if (line.startsWith("NAMEACCEPTED")) {
 							JTextField message_panel = (JTextField) contentPane.getComponent(0) ;
-							message_panel.setText("");
+							message_panel.setText("recived server responss \n");
 							out.println(username);
 						}else if (line.startsWith("MESSAGE")) {
 							main_chat_m.append(line.substring(8) + "\n");
 						} else if (line.startsWith("USERLIST")) {
 							user_list_m.setText("");
-							String[] users = line.substring(8).split(",");
-							for (String username : users) {
-								user_list_m.append(username + "\n");// add to the user list
+							String[] users = line.substring(9).split(",");
+							for (String user : users) {
+								user_list_m.append(user + "\n");
 							}
 						} else if (line.startsWith("PRIVATEMESSAGE")) {
 							main_chat_m.append(line.substring(15) + "\n");
@@ -399,3 +375,13 @@ public class ServicePublishImpl implements UserManagePublish {
 	
 
 }
+
+
+
+
+
+
+
+
+
+

@@ -46,7 +46,7 @@ public class ChatServer implements ChatServerInterface {
 	public void startServer() {
 		try {
 			serverSocket = new ServerSocket(port);
-			System.out.println("CChat Server started on port " + port);
+			System.out.println("    Chat Server started on port : " + port);
 			while (true) {
 				new Handler(serverSocket.accept()).start();
 			}

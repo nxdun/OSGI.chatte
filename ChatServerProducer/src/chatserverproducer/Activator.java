@@ -16,10 +16,10 @@ public class Activator implements BundleActivator {
     		 chatServer = new ChatServer(9002);
     		//runs in thread so that it does not block the main thread
         	 chatServer.startServerInThread();
-        	 
         	 //register the chat server as a service
         	 ChatServerInterface ChatPublisher = chatServer; ;
         	 CSProducerRegistration = context.registerService(ChatServerInterface.class.getName(), ChatPublisher, null);
+        	 System.out.println("..................Chat Server bundle started..................");
 	} catch (Exception e) {
 		System.out.println(e);
 	}

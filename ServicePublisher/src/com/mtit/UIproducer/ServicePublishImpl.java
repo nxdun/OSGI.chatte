@@ -40,10 +40,10 @@ public class ServicePublishImpl implements ServicePublish {
 
 			//contains in terminal functionality for manipulate other Services
 	    	public void headStart() {
-	    		try {
+	    	
 	    		
 	    		System.out.print("_____________________________________________________"
-	    				+ 		   "\n         hi there! Welcome to chat server wizard"
+	    				+ 		   "\n         hii there! Welcome to chat server wizard"
 	    				+ 		   "\n_____________________________________________________"
 	    				+ 		   "\n_____________________________________________________");
 
@@ -66,6 +66,7 @@ public class ServicePublishImpl implements ServicePublish {
 	    					+ 		   "\n         Other"
 	    					+ 		   "\n_____________________________________________________"
 	    					+ "\n0) TESTING : start log in frame"
+	    					+"\npoop"
 	    					+ "\n99)exit from entire framework"
 	    					);
 	    			Scanner sc = new Scanner(System.in);
@@ -142,12 +143,9 @@ public class ServicePublishImpl implements ServicePublish {
 	    				break;
 	    			}
 	    		}
-			} catch (Exception e) {
-				System.out.println("error in headstart" + e);
-				e.printStackTrace();
-			}
+			} 
 	    		
-	    	}
+	    	
 
 	    	
 	 //im here to send the components to the other service
