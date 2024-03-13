@@ -61,7 +61,7 @@ public class ServicePublishImpl implements ServicePublish {
 		    					+ 		   "\n__Other__"
 		    					+ "\n0) TESTING : start log in frame"
 		    					+ "\n99)exit from entire framework"
-		    					+ "\n|||"
+		    					+ "\n_____________________________________________________"
 		    					+ "\n"
 		    					);
 		    			Scanner sc = new Scanner(System.in);
@@ -70,7 +70,8 @@ public class ServicePublishImpl implements ServicePublish {
 		    			case 0:
 		    				//toggles the log frame visibility
 		    				System.out.println("testing purpose");
-		    				createLogFrame().setVisible(true);
+		    				UM.addLoginLogic();
+		    				UM.addRegistrationLogic();
 		    				break;
 		    			case 1:
 		    				//prints running chat server port
@@ -244,6 +245,7 @@ public class ServicePublishImpl implements ServicePublish {
 			register_textfield_sn.setBounds(169, 45, 186, 20);
 			contentPane.add(register_textfield_sn);
 			register_textfield_sn.setColumns(10);
+			components.put("register_textfield_sn",register_textfield_sn);
 			
 			JLabel register_username = new JLabel("User Name");
 			register_username.setBounds(37, 90, 101, 14);

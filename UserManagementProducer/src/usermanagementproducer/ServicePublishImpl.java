@@ -122,9 +122,13 @@ public class ServicePublishImpl implements UserManagePublish {
         // Get UI components for registration
         JTextField regUsernameField = (JTextField) comps.get("register_textfield_un");
         JTextField regPasswordField = (JTextField) comps.get("register_textfield_pwd");
+        JTextField register_textfield_sn = (JTextField) comps.get("register_textfield_sn");
         JButton registerButton = (JButton) comps.get("register_button_reg");
         JLabel regOutputLabel = (JLabel) comps.get("register_label_out");
 
+        //make register_textfield_sn cannot edit
+        register_textfield_sn.setEditable(false);
+       
         // Add action listener to register button
         registerButton.addActionListener(new ActionListener() {
             @Override
