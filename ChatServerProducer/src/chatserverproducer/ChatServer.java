@@ -110,11 +110,16 @@ public class ChatServer implements ChatServerInterface {
 				//initial message sent to client
 				out.println("NAMEACCEPTED");
 				name = in.readLine();
+				if (name == null || name.isEmpty()) {
+					
+				} else {
+					names.add(name);
+				}
 				
-				names.add(name);
 				
 				writers.add(out);
 				broadcastLoggedInClients();
+			
 
 				for (PrintWriter writer : writers) {
 					writer.println("MESSAGE ...Hi !! " + name
