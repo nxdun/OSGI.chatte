@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -68,6 +71,10 @@ public class ServicePublishImpl implements UserManagePublish {
 		//creating the registration frame
 		chatFrames.put(0, (JFrame) UIProducerService.createLogFrame());
         chatFrames.put(1, (JFrame) UIProducerService.createRegFrame());
+        
+        chatFrames.put(8, (JFrame) UIProducerService.privateChatFrame());
+        chatFrames.put(9, (JFrame) UIProducerService.PrivateSelectUserFrame());
+        
        
         //take UI components from the UI service
         this.comps = UIProducerService.sendComponent();
@@ -95,18 +102,25 @@ public class ServicePublishImpl implements UserManagePublish {
 
                 // Validate login credentials
                 if (isValidLogin(username, password)) {
-                    // Show success message and proceed
-                    outputLabel.setForeground(java.awt.Color.GREEN);
-                    outputLabel.setText("Login successful!");
-                    
-                    for (int i = 2; i < 7; i++) {
-                    	if(chatFrames.get(i).isVisible() == false) {
-                    		showChatFrame(username, i, portno);
-                    		break;
-						} 
-                    	
-            		};
+                	
+                	// Check if the username is already logged in
+                	if (isUserLoggedIn(username)) {
+                        // Show error message
+                        outputLabel.setForeground(java.awt.Color.RED);
+                        outputLabel.setText("User already logged in!");
+                    } else {
+                        // Show success message and proceed
+                        outputLabel.setForeground(java.awt.Color.GREEN);
+                        outputLabel.setText("Login successful!");
 
+                        // Open chat frame
+                        for (int i = 2; i < 7; i++) {
+                            if (chatFrames.get(i).isVisible() == false) {
+                                showChatFrame(username, i, portno);
+                                break;
+                            }
+                        }
+                    }
                 } else {
                     // Show error message
                     outputLabel.setForeground(java.awt.Color.RED);
@@ -115,6 +129,12 @@ public class ServicePublishImpl implements UserManagePublish {
             }
         });
         chatFrames.get(0).setVisible(true);
+    }
+    //login logic method already logged in
+    private boolean isUserLoggedIn(String username) {
+        // Check if the username is present in the list of logged-in users
+        return chatFrames.values().stream()
+                .anyMatch(frame -> frame.getTitle().equals("Chatte - " + username));
     }
     
 	public void addRegistrationLogic() {
@@ -184,6 +204,25 @@ public class ServicePublishImpl implements UserManagePublish {
 		cframethread.start();
     }
     
+    @Override
+    public void privateChatFrame(String username, String msg) {
+    	
+    	
+    	
+    	// TODO Auto-generated method stub
+    	comps.get("pvtframe").setVisible(true);
+    	JTextField private_chat = (JTextField) comps.get("Pvt_msg_txtField");
+    	JButton send_pvt = (JButton) comps.get("Pvt_msg_Send");
+    	JTextPane private_chat_area = (JTextPane) comps.get("textPane_pvt");
+    	JButton goback_main = (JButton) comps.get("pvtchat_gobackbtn");
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    }
     
     //displays chat frame max 6 USERS
     public void showChatFrame(String username, int frameno, int port) {
@@ -207,10 +246,14 @@ public class ServicePublishImpl implements UserManagePublish {
 }
 
 
+	
 
 //chat frames class implementation
  class ShowChatFrames {
     private JTextArea user_list_m = new JTextArea() ;
+    
+    public String username =  "";
+    
     private JTextArea main_chat_m = new JTextArea() ;
 	
 	//constructor
@@ -223,7 +266,8 @@ public class ServicePublishImpl implements UserManagePublish {
 			// get chatFrame current Componenta
 			Component[] components = chatFrame.getContentPane().getComponents();
 
-
+			this.username = username;
+			
 		    chatFrame.setTitle("Chatte - " + username); // Set title with logged-in username
 		    chatFrame.setSize(600, 400); // Set size as per your requirement
 		    chatFrame.setLocationRelativeTo(null); // Center the frame on the screen
@@ -236,7 +280,11 @@ public class ServicePublishImpl implements UserManagePublish {
 
 		    JTextField message_panel = (JTextField) contentPane.getComponent(0) ;
 		    JButton send_brodcast = null;
-		    JButton send_pvt = null;
+		    
+		    JButton send_pvt = (JButton) comps.get("send_pvt");
+		    
+		    
+		    
 		    JButton send_grp = null;
 		    JScrollPane main_chat = (JScrollPane) comps.get("main_chat");
 		    JScrollPane user_list = (JScrollPane) comps.get("user_list");
@@ -251,7 +299,7 @@ public class ServicePublishImpl implements UserManagePublish {
 		                    send_brodcast = button;
 		                    break;
 		                case "Private Message":
-		                    send_pvt = button;
+		                    send_pvt = button;		           
 		                    break;
 		                case "Group Message":
 		                    send_grp = button;
@@ -274,7 +322,55 @@ public class ServicePublishImpl implements UserManagePublish {
 		            }
 		        }
 		    }
+		    send_pvt.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	            	
+	            	chatFrames.get(9).setVisible(true);
+	            	
+	            	
+	            	JTextField selectuser = (JTextField) comps.get("textField_selectuname");
+	            	JTextField selectuser2 = (JTextField) comps.get("Pvt_msg_txtField");
+	            	JButton selectuserbtn = (JButton) comps.get("select_btnuser");
+	            	JButton selectuserbtn2 = (JButton) comps.get("Pvt_msg_Send");
+	            	
+	            	String sUn = selectuser.getText();
+	            	
+	            	selectuserbtn.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                        	
+                        	chatFrames.get(9).setVisible(false);
+                        	chatFrames.get(8).setVisible(true);
+                        	
+                        	try {
+                        	String serverAddress = "localhost";
+                        	
+                        	Socket socket = new Socket(serverAddress, port);
+                        	PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+							
+								selectuserbtn2.addActionListener(new ActionListener() {
+									@Override
+									public void actionPerformed(ActionEvent e) {
 
+										String message = selectuser2.getText();
+										out.println( sUn + ">>" + message);
+										System.out.println("message sent"+ sUn);
+
+									}
+								});
+                        	//send private message
+	            	
+                        }catch (IOException e1) {
+                        }
+                        }
+                        });
+	            	
+	            	
+	                
+	            }
+	        });
+		    
 		    	main_chat.setViewportView(main_chat_m);
 
 				user_list.setViewportView(user_list_m);
@@ -312,8 +408,20 @@ public class ServicePublishImpl implements UserManagePublish {
 					JTextField message_panel = (JTextField) contentPane.getComponent(0) ;
 					String message = message_panel.getText();
 				//send private message on click
+					
 				}
 			});
+			
+			//when chat frame is closed send a message indicating user has left
+			chatFrame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    // When chat frame is closed, send a message indicating user has left
+                    out.println( username + " has left the chat");
+                }
+            });
+			
+			
 
 			// Process all messages from server, according to the protocol.
 			// Threaded infinite loop
@@ -327,18 +435,37 @@ public class ServicePublishImpl implements UserManagePublish {
 						
 						if (line.startsWith("NAMEACCEPTED")) {
 							JTextField message_panel = (JTextField) contentPane.getComponent(0) ;
-							message_panel.setText("recived server responss \n");
+							message_panel.setText("");
 							out.println(username);
 						}else if (line.startsWith("MESSAGE")) {
 							main_chat_m.append(line.substring(8) + "\n");
 						} else if (line.startsWith("USERLIST")) {
 							user_list_m.setText("");
-							String[] users = line.substring(9).split(",");
+							String[] users = line.substring(8).split(",");
 							for (String user : users) {
 								user_list_m.append(user + "\n");
 							}
 						} else if (line.startsWith("PRIVATEMESSAGE")) {
-							main_chat_m.append(line.substring(15) + "\n");
+							// split string to subparts and takes sender reciver individually
+							// line = "PRIVATEMESSAGE <sender> <reciver> !!<message>"
+							String[] parts = line.split(" ");
+							String mSender = parts[1].trim();
+							String mReceiver = parts[2].trim();
+							String recivedMessage = line.split("!!")[1];
+
+							// display logic for private message
+							// sender and reciver can only see pm
+							if (username.equals(mSender) || username.equals(mReceiver)) {
+
+								if (mSender.equals(mReceiver)) {
+									main_chat_m.append("You sent yourself :? ");
+								} else {
+									main_chat_m.append(
+											"(private) FROM: " + mReceiver + " TO: " + mSender + "   :   " + recivedMessage + "\n");
+								}
+
+							}
+								
 						} else if (line.startsWith("GROUPMESSAGE")) {
 							main_chat_m.append(line.substring(13) + "\n");
 						}else {
@@ -367,7 +494,9 @@ public class ServicePublishImpl implements UserManagePublish {
     }
 	
 
-}}
+}
+
+}
 
 
 

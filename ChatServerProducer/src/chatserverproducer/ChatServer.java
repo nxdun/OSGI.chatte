@@ -115,6 +115,7 @@ public class ChatServer implements ChatServerInterface {
 				
 				writers.add(out);
 				broadcastLoggedInClients();
+			
 
 				for (PrintWriter writer : writers) {
 					writer.println("MESSAGE ...Hi !! " + name

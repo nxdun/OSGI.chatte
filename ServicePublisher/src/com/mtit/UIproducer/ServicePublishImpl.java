@@ -344,6 +344,7 @@ public class ServicePublishImpl implements ServicePublish {
 			frame.setBounds(100, 100, 484, 333);
 			JPanel contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+			components.put("pvtframe",contentPane);
 
 			frame.setContentPane(contentPane);
 			contentPane.setLayout(null);
@@ -352,18 +353,22 @@ public class ServicePublishImpl implements ServicePublish {
 			Pvt_msg_txtField.setBounds(10, 263, 338, 20);
 			contentPane.add(Pvt_msg_txtField);
 			Pvt_msg_txtField.setColumns(10);
+			components.put("Pvt_msg_txtField",Pvt_msg_txtField);
 			
 			JButton Pvt_msg_Send = new JButton("Send");
 			Pvt_msg_Send.setBounds(369, 262, 89, 23);
 			contentPane.add(Pvt_msg_Send);
+			components.put("Pvt_msg_Send",Pvt_msg_Send);
 			
 			JTextPane textPane_pvt = new JTextPane();
 			textPane_pvt.setBounds(10, 11, 448, 227);
 			contentPane.add(textPane_pvt);
+			components.put("textPane_pvt",textPane_pvt);
 			
 			JButton pvtchat_gobackbtn = new JButton("Go back");
 			pvtchat_gobackbtn.setBounds(10, 0, 89, 23);
 			contentPane.add(pvtchat_gobackbtn);
+			components.put("pvtchat_gobackbtn",pvtchat_gobackbtn);
 			
 			return frame;
 		}
@@ -375,6 +380,7 @@ public class ServicePublishImpl implements ServicePublish {
 			frame.setBounds(100, 100, 295, 225);
 			JPanel contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+			components.put("selectuserframe",contentPane);
 
 			frame.setContentPane(contentPane);
 			contentPane.setLayout(null);
@@ -383,6 +389,7 @@ public class ServicePublishImpl implements ServicePublish {
 			textField_selectuname.setBounds(37, 56, 214, 20);
 			contentPane.add(textField_selectuname);
 			textField_selectuname.setColumns(10);
+			components.put("textField_selectuname",textField_selectuname);
 			
 			JLabel selectUname = new JLabel("User name");
 			selectUname.setBounds(37, 29, 99, 14);
@@ -395,10 +402,12 @@ public class ServicePublishImpl implements ServicePublish {
 			});
 			select_btnuser.setBounds(94, 106, 89, 23);
 			contentPane.add(select_btnuser);
+			components.put("select_btnuser",select_btnuser);
 			
 			JButton gobackBtn_selectuser = new JButton("Go back");
 			gobackBtn_selectuser.setBounds(94, 140, 89, 23);
 			contentPane.add(gobackBtn_selectuser);
+			components.put("gobackBtn_selectuser",gobackBtn_selectuser);
 			
 			return frame;
 		}
